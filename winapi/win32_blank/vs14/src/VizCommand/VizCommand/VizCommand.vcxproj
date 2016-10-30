@@ -150,6 +150,7 @@
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WindowListView.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowListView.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VizCommand.rc" />
