@@ -183,6 +183,44 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// ウィンドウのサイズが変更された時.
+		case WM_SIZE:
+
+			// WM_SIZEブロック
+			{
+
+				// 変数の宣言
+				UINT nType;	// サイズ変更のタイプ
+				int cx;	// 変更後の幅
+				int cy;	// 変更後の高さ
+
+				// 値の取出し.
+				nType = wParam;	// nTypeにwParamをセット.
+				cx = LOWORD(lParam);	// cxにlParamの下位ワードをセット.
+				cy = HIWORD(lParam);	// cyにlParamの上位ワードをセット.
+
+				// OnSizeに任せる.
+				OnSize(nType, cx, cy);	// OnSizeを呼ぶ.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// 画面描画の更新を要求された時.
+		case WM_PAINT:
+
+			// WM_PAINTブロック
+			{
+
+				// OnPaintに任せる.
+				OnPaint();
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// ウィンドウが閉じられたとき.
 		case WM_CLOSE:
 
@@ -223,6 +261,26 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 	// 既定の処理
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);	// DefWindowProcに任せる.
+
+}
+
+// ウィンドウにテキストをセットするメンバ関数SetWindowText.
+void CWindow::SetWindowText(LPCTSTR lpctszString){
+
+}
+
+// ウィンドウのサイズや位置を変更するメンバ関数MoveWindow.
+void CWindow::MoveWindow(int x, int y, int iWidth, int iHeight){
+
+}
+
+// ウィンドウのサイズが変更された時のハンドラOnSize.
+void CWindow::OnSize(UINT nType, int cx, int cy){
+
+}
+
+// 画面描画の更新を要求された時.
+void CWindow::OnPaint(){
 
 }
 

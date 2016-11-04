@@ -32,8 +32,12 @@ class CWindow {
 		virtual BOOL ShowWindow(int nCmdShow);	// ウィンドウ表示関数ShowWindow
 		virtual LRESULT DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);	// WindowProcから各ウィンドウオブジェクトごとに呼び出されるサブウィンドウプロシージャDynamicWindowProc
 		virtual void Destroy() = 0;	// OnCloseとOnDestroyの間に子ウィンドウなどを破棄するメンバ関数Destroy.(純粋仮想関数)
+		virtual void SetWindowText(LPCTSTR lpctszString);	// ウィンドウにテキストをセットするメンバ関数SetWindowText.
+		virtual void MoveWindow(int x, int y, int iWidth, int iHeight);	// ウィンドウのサイズや位置を変更するメンバ関数MoveWindow.
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) = 0;	// ウィンドウ作成時のハンドラOnCreate.(純粋仮想関数)
 		virtual void OnDestroy() = 0;	// ウィンドウ破棄時のハンドラOnDestroy.(純粋仮想関数)
+		virtual void OnSize(UINT nType, int cx, int cy);	// ウィンドウのサイズが変更された時のハンドラOnSize.
+		virtual void OnPaint();	// 画面描画の更新を要求された時.
 		virtual int OnClose() = 0;		// ウィンドウを閉じる時のハンドラOnClose.(純粋仮想関数)
 		virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);	// コマンド処理時のハンドラOnCommand.
 

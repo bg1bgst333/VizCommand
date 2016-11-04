@@ -8,6 +8,7 @@ BOOL CMainApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int n
 	// ウィンドウクラスの登録.
 	CWindow::RegisterClass(hInstance, _T("VizCommand_MainWindow"));	// CWindow::RegisterClassで"VizCommand_MainWindow"をウィンドウクラスに登録.
 	CWindow::RegisterClass(hInstance, _T("WindowListView"));	// CWindow::RegisterClassで"WindowListView"をウィンドウクラスに登録.
+	CWindow::RegisterClass(hInstance, _T("WindowListItem"));	// CWindow::RegisterClassで"WindowListItem"をウィンドウクラスに登録.
 
 	// CMainWindowオブジェクトの作成.
 	m_pMainWindow = new CMainWindow();	// CMainWindowオブジェクトを作成し, そのポインタをm_pMainWindowに格納.

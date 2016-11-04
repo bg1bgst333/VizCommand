@@ -24,8 +24,26 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// 子ウィンドウとなるウィンドウリストビューオブジェクトの作成.
 	m_pWindowListView = new CWindowListView();	// CWindowListViewオブジェクトm_pWindowListViewの作成.
 
-	// 子ウィンドウの作成.
+	// ウィンドウリストビューの作成.
 	m_pWindowListView->Create(100, 100, 200, 200, hwnd, (HMENU)IDC_WINDOW_LISTVIEW, lpCreateStruct->hInstance);	// m_pWindowListView->Createでウィンドウリストビューを作成.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(0, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(1, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(2, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(3, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(4, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+
+	// ウィンドウリストアイテムの追加.
+	m_pWindowListView->Insert(1, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
 
 	// ウィンドウ作成成功
 	return 0;	// 成功なら0を返す.
@@ -37,6 +55,14 @@ void CMainWindow::OnDestroy() {
 
 	// メッセージループ終了.
 	PostQuitMessage(0);	// PostQuitMessageでメッセージループを抜けさせる.
+
+}
+
+// ウィンドウのサイズが変更された時のハンドラOnSize.
+void CMainWindow::OnSize(UINT nType, int cx, int cy) {
+	
+	// 子ウィンドウのウィンドウリストビューのサイズも変更.
+	::MoveWindow(m_pWindowListView->m_hWnd, 0, 0, cx, cy, TRUE);	// MoveWindowで子ウィンドウm_pWindowListViewのサイズもこのウィンドウに合わせる.
 
 }
 
