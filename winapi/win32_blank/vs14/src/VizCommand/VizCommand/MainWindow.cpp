@@ -45,6 +45,21 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// ウィンドウリストアイテムの追加.
 	m_pWindowListView->Insert(1, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
 
+	// ウィンドウリストアイテムの削除
+	m_pWindowListView->Delete(-1);	// -1番目(0番目)を削除.
+
+	// ウィンドウリストアイテムの削除
+	m_pWindowListView->Delete(10);	// 10番目(4番目)を削除.
+
+	// ウィンドウリストアイテムの削除
+	m_pWindowListView->Delete(0);	// 0番目を削除.
+
+	// ウィンドウリストアイテムの削除
+	m_pWindowListView->Delete(1);	// 1番目を削除.
+
+	// ウィンドウリストアイテムの削除
+	m_pWindowListView->Delete(1);	// 1番目を削除.
+
 	// ウィンドウ作成成功
 	return 0;	// 成功なら0を返す.
 

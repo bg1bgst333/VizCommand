@@ -92,18 +92,28 @@ void CWindowListView::Delete(int index){
 			m_vecpWindowList.erase(m_vecpWindowList.begin() + m_vecpWindowList.size() - 1);	// m_vecpWindowList.size() - 1番目をeraseで削除.
 			return;
 		}
-		if (index < -1) {	// マイナスなら0の取出し.
+		if (index < 0) {	// マイナスなら0の取出し.
+			int height = m_vecpWindowList[0]->m_iHeight;	// 0番目のm_iHeightを保存.
 			CWindowListItem *pItem = m_vecpWindowList.at(0);	// 0を削除..
 			pItem->Destroy();	// pItem->Destroyでウィンドウの破棄.
 			delete pItem;	// deleteでpItemを解放.
 			m_vecpWindowList.erase(m_vecpWindowList.begin() + 0);	// 0番目をeraseで削除.
+			// 後ろはheight分ずれる.
+			for (int i = 0; i <= (int)m_vecpWindowList.size() - 1; i++) {
+				m_vecpWindowList[i]->MoveWindow(m_vecpWindowList[i]->m_x, m_vecpWindowList[i]->m_y - height, m_vecpWindowList[i]->m_iWidth, m_vecpWindowList[i]->m_iHeight);
+			}
 			return;
 		}
 		// index番目の削除.
 		CWindowListItem *pItem = m_vecpWindowList.at(index);	// m_vecpWindowList.atで取出し.
+		int delHeight = pItem->m_iHeight;	// delHeightに保存.
 		pItem->Destroy();	// pItem->Destroyでウィンドウの破棄.
 		delete pItem;	// deleteでpItemを解放.
 		m_vecpWindowList.erase(m_vecpWindowList.begin() + index);	// index番目をeraseで削除.
+		// 後ろはheight分ずれる.
+		for (int i = index; i <= (int)m_vecpWindowList.size() - 1; i++) {
+			m_vecpWindowList[i]->MoveWindow(m_vecpWindowList[i]->m_x, m_vecpWindowList[i]->m_y - delHeight, m_vecpWindowList[i]->m_iWidth, m_vecpWindowList[i]->m_iHeight);
+		}
 	}
 
 }
