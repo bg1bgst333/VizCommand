@@ -36,9 +36,11 @@ class CWindow {
 		virtual void MoveWindow(int x, int y, int iWidth, int iHeight);	// ウィンドウのサイズや位置を変更するメンバ関数MoveWindow.
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) = 0;	// ウィンドウ作成時のハンドラOnCreate.(純粋仮想関数)
 		virtual void OnDestroy() = 0;	// ウィンドウ破棄時のハンドラOnDestroy.(純粋仮想関数)
+		virtual void OnMove(int x, int y);	// ウィンドウが移動された時のハンドラOnMove.
 		virtual void OnSize(UINT nType, int cx, int cy);	// ウィンドウのサイズが変更された時のハンドラOnSize.
 		virtual void OnPaint();	// 画面描画の更新を要求された時.
 		virtual int OnClose() = 0;		// ウィンドウを閉じる時のハンドラOnClose.(純粋仮想関数)
 		virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);	// コマンド処理時のハンドラOnCommand.
+		virtual void OnVScroll(UINT nSBCode, UINT nPos, HWND hScroll);	// 垂直スクロール時のハンドラOnVScroll.
 
 };

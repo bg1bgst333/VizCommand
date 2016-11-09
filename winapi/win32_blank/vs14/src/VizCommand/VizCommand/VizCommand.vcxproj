@@ -151,6 +151,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowListItem.cpp" />
+    <ClCompile Include="WindowListItemsPanel.cpp" />
     <ClCompile Include="WindowListView.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowListItem.h" />
+    <ClInclude Include="WindowListItemsPanel.h" />
     <ClInclude Include="WindowListView.h" />
   </ItemGroup>
   <ItemGroup>

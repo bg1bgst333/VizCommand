@@ -183,9 +183,23 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// ウィンドウが移動された時.
+		case WM_MOVE:
+
+			// WM_MOVEブロック
+			{
+
+				// OnMoveに任せる.
+				OnMove(LOWORD(lParam), HIWORD(lParam));
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// ウィンドウのサイズが変更された時.
 		case WM_SIZE:
-
+			
 			// WM_SIZEブロック
 			{
 
@@ -250,6 +264,30 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
+		
+		// スクロールされた時.
+		case WM_VSCROLL:
+
+			// WM_VSCROLLブロック
+			{
+
+				// 変数の宣言.
+				UINT nSBCode;
+				UINT nPos;
+				HWND hScroll;
+
+				// 取出し.
+				nSBCode = LOWORD(wParam);
+				nPos = HIWORD(wParam);
+				hScroll = (HWND)lParam;
+
+				// OnVScrollに任せる.
+				OnVScroll(nSBCode, nPos, hScroll);
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
 
 		// それ以外の時.
 		default:
@@ -274,6 +312,11 @@ void CWindow::MoveWindow(int x, int y, int iWidth, int iHeight){
 
 }
 
+// ウィンドウが移動された時のハンドラOnMove.
+void CWindow::OnMove(int x, int y){
+
+}
+
 // ウィンドウのサイズが変更された時のハンドラOnSize.
 void CWindow::OnSize(UINT nType, int cx, int cy){
 
@@ -289,5 +332,10 @@ BOOL CWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
 
 	// FALSEを返す.
 	return FALSE;	// FALSEを返す.
+
+}
+
+// 垂直スクロール時のハンドラOnVScroll.
+void CWindow::OnVScroll(UINT nSBCode, UINT nPos, HWND hScroll){
 
 }

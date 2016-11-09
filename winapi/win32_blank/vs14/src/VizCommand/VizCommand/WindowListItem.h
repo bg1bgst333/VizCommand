@@ -5,7 +5,7 @@
 // 独自のヘッダ
 #include "Window.h"		// ウィンドウクラス
 // リソースIDの定義.
-#define IDC_WINDOW_LISTITEM WM_USER + 200
+#define IDC_WINDOW_LISTITEM WM_USER + 300
 
 // ウィンドウリストアイテムクラス
 class CWindowListItem : public CWindow {	// CWindowの派生クラス
