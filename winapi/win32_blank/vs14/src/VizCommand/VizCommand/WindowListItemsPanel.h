@@ -31,6 +31,7 @@ class CWindowListItemsPanel : public CWindow {	// CWindowの派生クラス
 		virtual void Destroy();	// OnCloseとOnDestroyの間に子ウィンドウなどを破棄するメンバ関数Destroy.
 		virtual BOOL Insert(int index, int height, HINSTANCE hInstance);	// ウィンドウリストアイテムを挿入するメンバ関数Insert.
 		virtual void Delete(int index);	// ウィンドウリストアイテムを削除するメンバ関数Delete.
+		virtual CWindowListItem * Get(int index);	// ウィンドウリストアイテムを取得するメンバ関数Get.
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual void OnDestroy();	// ウィンドウ破棄時のハンドラOnDestroy.
 		virtual void OnMove(int x, int y);	// ウィンドウが移動された時のハンドラOnMove.

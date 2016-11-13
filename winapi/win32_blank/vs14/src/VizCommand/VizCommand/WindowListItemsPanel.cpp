@@ -139,6 +139,14 @@ void CWindowListItemsPanel::Delete(int index) {
 
 }
 
+// ウィンドウリストアイテムを取得するメンバ関数Get.
+CWindowListItem * CWindowListItemsPanel::Get(int index){
+
+	// index番目のアイテムを返す.
+	return m_vecpWindowList[index];
+
+}
+
 // ウィンドウ作成時のハンドラOnCreate.
 int CWindowListItemsPanel::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
@@ -172,7 +180,7 @@ void CWindowListItemsPanel::OnSize(UINT nType, int cx, int cy) {
 		// 子ウィンドウのサイズも変更.
 		(*it)->m_iWidth = cx;	// 横幅はcxに合わせる.
 		// 高さはそのまま.
-		::MoveWindow((*it)->m_hWnd, 50, (*it)->m_y, (*it)->m_iWidth, (*it)->m_iHeight, TRUE);	// MoveWindowで子ウィンドウのサイズもこのウィンドウの横幅に合わせる.
+		::MoveWindow((*it)->m_hWnd, 0, (*it)->m_y, (*it)->m_iWidth, (*it)->m_iHeight, TRUE);	// MoveWindowで子ウィンドウのサイズもこのウィンドウの横幅に合わせる.
 
 	}
 

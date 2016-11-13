@@ -37,6 +37,14 @@ void CWindowListView::Delete(int index){
 
 }
 
+// ウィンドウリストアイテムを取得するメンバ関数Get.
+CWindowListItem * CWindowListView::Get(int index){
+	
+	// index番目のアイテムを返す.
+	return m_pWindowListItemsPanel->Get(index);
+
+}
+
 // ウィンドウ作成時のハンドラOnCreate.
 int CWindowListView::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 

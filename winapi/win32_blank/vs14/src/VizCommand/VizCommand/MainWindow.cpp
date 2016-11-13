@@ -1,10 +1,24 @@
 // ヘッダのインクルード
 #include "MainWindow.h"	// メインウィンドウクラス
+#include "EditPanel.h"	// エディットパネルクラス
+#include "WindowListItem.h"	// ウィンドウリストアイテムクラス
 
 // OnCloseとOnDestroyの間に子ウィンドウなどを破棄するメンバ関数Destroy.
 void CMainWindow::Destroy() {
 
-	// 子ウィンドウの破棄.
+
+	// 孫ウィンドウ(ウィンドウリストアイテムの子ウィンドウ)の破棄.
+	CChildMapItem *pItem = m_pChildMap->Get(_T("0"));
+	pItem->m_pWindow->Destroy();
+	delete pItem->m_pWindow;
+	delete pItem;
+	m_pChildMap->Remove(_T("0"));
+	delete m_pChildMap;
+
+	// アイテムの破棄.
+	m_pWindowListView->Delete(0);
+
+	// 子ウィンドウ(ウィンドウリストアイテム)の破棄.
 	m_pWindowListView->Destroy();	// m_pWindowListView->Destroyで破棄.
 
 	// ウィンドウリストビューの破棄.
@@ -24,47 +38,20 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// 子ウィンドウとなるウィンドウリストビューオブジェクトの作成.
 	m_pWindowListView = new CWindowListView();	// CWindowListViewオブジェクトm_pWindowListViewの作成.
 
+	// ウィンドウリストアイテムの子ウィンドウを管理するマップの作製.
+	m_pChildMap = new CChildMap;
+
 	// ウィンドウリストビューの作成.
 	m_pWindowListView->Create(0, 0, 200, 200, hwnd, (HMENU)IDC_WINDOW_LIST_VIEW, lpCreateStruct->hInstance);	// m_pWindowListView->Createでウィンドウリストビューを作成.
 
 	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(0, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
+	m_pWindowListView->Insert(0, 200, lpCreateStruct->hInstance);	// 高さ200のウィンドウリストアイテムをInsert.
 
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(1, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(2, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(3, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(4, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(5, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(6, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(7, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(8, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(9, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(10, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの追加.
-	m_pWindowListView->Insert(11, 50, lpCreateStruct->hInstance);	// 高さ50のウィンドウリストアイテムをInsert.
-
-	// ウィンドウリストアイテムの削除
-	//m_pWindowListView->Delete(1);	// 1番目を削除.
+	// エディットパネルのセット.
+	CWindowListItem *m_pWindowListItem = m_pWindowListView->Get(0);	// 0番目のアイテムを取得.
+	CEditPanel *pEditPanel = new CEditPanel();	// pEditPanelオブジェクトの作成.
+	pEditPanel->Create(50, 50, 50, 50, m_pWindowListItem->m_hWnd, (HMENU)IDC_EDIT_PANEL, lpCreateStruct->hInstance);	// pEditPanel->Createで生成.
+	m_pChildMap->Add(_T("0"), new CChildMapItem(0, pEditPanel));	// チャイルドマップに追加.
 
 	// ウィンドウ作成成功
 	return 0;	// 成功なら0を返す.

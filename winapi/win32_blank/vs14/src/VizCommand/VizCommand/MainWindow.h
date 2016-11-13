@@ -5,6 +5,7 @@
 // 独自のヘッダ
 #include "Window.h"		// ウィンドウクラス
 #include "WindowListView.h"	// ウィンドウリストビュークラス
+#include "ChildMap.h"	// チャイルドマップクラス
 
 // メインウィンドウクラス
 class CMainWindow : public CWindow {	// CWindowの派生クラス
@@ -14,6 +15,7 @@ class CMainWindow : public CWindow {	// CWindowの派生クラス
 
 		// publicメンバ変数
 		CWindowListView *m_pWindowListView;	// CWindowListViewオブジェクトポインタm_pWindowListView.
+		CChildMap *m_pChildMap;	// CChildMapオブジェクトポインタm_pChildMap.
 
 		// publicメンバ関数
 		// メンバ関数

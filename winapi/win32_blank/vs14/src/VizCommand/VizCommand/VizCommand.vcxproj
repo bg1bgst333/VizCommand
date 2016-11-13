@@ -147,6 +147,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ChildMap.cpp" />
+    <ClCompile Include="ChildMapItem.cpp" />
+    <ClCompile Include="EditPanel.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -157,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ChildMap.h" />
+    <ClInclude Include="ChildMapItem.h" />
+    <ClInclude Include="EditPanel.h" />
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="resource.h" />
