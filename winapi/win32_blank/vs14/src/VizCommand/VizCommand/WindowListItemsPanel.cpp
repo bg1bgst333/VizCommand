@@ -180,7 +180,7 @@ void CWindowListItemsPanel::OnSize(UINT nType, int cx, int cy) {
 		// 子ウィンドウのサイズも変更.
 		(*it)->m_iWidth = cx;	// 横幅はcxに合わせる.
 		// 高さはそのまま.
-		::MoveWindow((*it)->m_hWnd, 0, (*it)->m_y, (*it)->m_iWidth, (*it)->m_iHeight, TRUE);	// MoveWindowで子ウィンドウのサイズもこのウィンドウの横幅に合わせる.
+		::MoveWindow((*it)->m_hWnd, 0, (*it)->m_y, (*it)->m_iWidth, (*it)->m_iHeight/* + 2*/, TRUE);	// MoveWindowで子ウィンドウのサイズもこのウィンドウの横幅に合わせる.
 
 	}
 

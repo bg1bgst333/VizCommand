@@ -29,6 +29,7 @@ class CWindowListItem : public CWindow {	// CWindowの派生クラス
 		virtual void MoveWindow(int x, int y, int iWidth, int iHeight);	// ウィンドウのサイズや位置を変更するメンバ関数MoveWindow.
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual void OnDestroy();	// ウィンドウ破棄時のハンドラOnDestroy.
+		virtual void OnSize(UINT nType, int cx, int cy);	// ウィンドウのサイズが変更された時のハンドラOnSize.
 		virtual void OnPaint();	// 画面描画の更新を要求された時.
 		virtual int OnClose();	// ウィンドウを閉じる時のハンドラOnClose.
 
