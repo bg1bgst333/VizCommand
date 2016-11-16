@@ -70,7 +70,7 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	m_pWindowListView->Insert(0, 200, lpCreateStruct->hInstance);	// 高さ200のウィンドウリストアイテムをInsert.
 
 	// エディットボックス追加
-	AddEdit(0, 50, 50, 200, 50, lpCreateStruct->hInstance);
+	AddEdit(0, 0, 0, 200, 50, lpCreateStruct->hInstance);
 
 	// ウィンドウ作成成功
 	return 0;	// 成功なら0を返す.
@@ -95,7 +95,7 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 	TCHAR tszTemp[256] = { 0 };
 	_stprintf_s(tszTemp, _T("WindowListItem[%d].Edit"), 0);	// インデックスをタグ名に変換.
 	CChildMapItem *pItem = m_pChildMap->Get(tszTemp);
-	::MoveWindow(pItem->m_pWindow->m_hWnd, 50, 50, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iWidth - 100/*cx - 17*/, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iHeight - 100, TRUE);	// ウィンドウリストアイテムよりひとまわり小さい子ウィンドウ.
+	::MoveWindow(pItem->m_pWindow->m_hWnd, 0, 0, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iWidth, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iHeight, TRUE);	// ウィンドウリストアイテムよりひとまわり小さい子ウィンドウ.
 
 }
 
