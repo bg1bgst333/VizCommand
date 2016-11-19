@@ -3,6 +3,7 @@
 
 // staticメンバ変数の定義.
 std::map<HWND, CWindow *> CWindow::m_mapWindowMap;	// staticメンバ変数CWindow::m_mapWindowMapは宣言と別にここに定義しないといけない.
+std::map<tstring, WNDPROC> CWindow::m_mapBaseWndProcMap;		// staticメンバ変数CWindow::m_mapBaseWndProcMapは宣言とは別にここに定義しないといけない.
 
 // ウィンドウクラス登録関数RegisterClass.
 BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName) {
@@ -86,8 +87,25 @@ LRESULT CALLBACK CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, 
 	// ウィンドウオブジェクト取得できない場合.
 	if (pWindow == NULL) {	// pWindowがNULL.
 
-		// DefWindowProcに任せる.
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+		// 配列の宣言.
+		TCHAR tszClassName[256] = { 0 };	// tszClassNameを0で初期化.
+
+		// ウィンドウハンドルからウィンドウクラス名を取得.
+		GetClassName(hwnd, tszClassName, 256);	// GetClassNameでウィンドウクラス名を取得.
+
+		// tszClassNameがm_mapBaseWndProcMapのキーにあれば.
+		if (m_mapBaseWndProcMap.find(tszClassName) != m_mapBaseWndProcMap.end()) {	// みつかったら.
+
+			// 既定ののプロシージャに任せる.
+			return CallWindowProc(m_mapBaseWndProcMap[tszClassName], hwnd, uMsg, wParam, lParam);	// CallWindowProcでこのメッセージをm_mapBaseWndProcMap[tszClassName]に任せる.
+
+		}
+		else {
+
+			// そうでないなら, DefWindowProcに任せる.
+			return DefWindowProc(hwnd, uMsg, wParam, lParam);
+
+		}
 
 	}
 	else {	// pWindowがあった.
@@ -108,6 +126,55 @@ BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dw
 
 		// 失敗ならFALSE.
 		return FALSE;	// FALSEを返す.
+
+	}
+
+	// 成功ならTRUE.
+	return TRUE;	// TRUEを返す.
+
+}
+
+// ウィンドウ作成関数Create(既存のウィンドウクラスのウィンドウプロシージャを差し替える場合.)
+BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, BOOL bProcChange){
+	
+	// ウィンドウの作成.
+	m_hWnd = CreateWindow(lpctszClassName, lpctszWindowName, dwStyle, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance, this);	// CreateWindowで指定された引数を使ってウィンドウを作成.
+	if (m_hWnd == NULL) {	// m_hWndがNULLなら失敗.
+
+		// 失敗ならFALSE.
+		return FALSE;	// FALSEを返す.
+
+	}
+
+	// プロシージャを差し替える場合.
+	if (bProcChange) {	// bProcChangeがTRUEなら.
+
+		// OnCreateは以降呼ばれないのでここで呼んでおく.
+		CREATESTRUCT cs;	// CREATESTRUCTを一応用意.
+		cs.hInstance = hInstance;	// hInstanceは要るかもしれないので, これは渡せるようにしておく.
+		if (OnCreate(m_hWnd, &cs) != 0) {	// OnCreateにcsを渡す.
+
+			// ウィンドウを破棄する.
+			DestroyWindow(m_hWnd);
+			m_hWnd = NULL;
+			return FALSE;
+
+		}
+
+		// 既定のウィンドウプロシージャを取得し, StaticWindowProcに差し替える.
+		WNDPROC lpfnWndProc;	// 既定のプロシージャlpfnWndProc.
+		lpfnWndProc = (WNDPROC)GetWindowLong(m_hWnd, GWL_WNDPROC);	// GetWindowLongでプロシージャlpfnWndProc取得.
+		SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)StaticWindowProc);	// SetWindowLongでプロシージャStaticWindowProc設定.
+
+		// マップにウィンドウクラス名がなければ登録.
+		if (m_mapBaseWndProcMap.find(lpctszClassName) == m_mapBaseWndProcMap.end()) {
+			m_mapBaseWndProcMap.insert(std::pair<tstring, WNDPROC>(lpctszClassName, lpfnWndProc));	// プロシージャを登録.
+		}
+
+		// WM_CREATEを通らないのでウィンドウマップの登録も行う.
+		if (CWindow::m_mapWindowMap.find(m_hWnd) == CWindow::m_mapWindowMap.end()) {
+			CWindow::m_mapWindowMap.insert(std::pair<HWND, CWindow *>(m_hWnd, this));
+		}
 
 	}
 
@@ -167,7 +234,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// ウィンドウが破棄された時.
 		case WM_DESTROY:
@@ -181,7 +248,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// ウィンドウが移動された時.
 		case WM_MOVE:
@@ -195,7 +262,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// ウィンドウのサイズが変更された時.
 		case WM_SIZE:
@@ -219,7 +286,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// 画面描画の更新を要求された時.
 		case WM_PAINT:
@@ -233,7 +300,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// ウィンドウが閉じられたとき.
 		case WM_CLOSE:
@@ -249,7 +316,21 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
+
+		// キーが押された時.
+		case WM_KEYDOWN:
+
+			// WM_KEYDOWNブロック
+			{
+
+				// OnKeyDownに任せる.	
+				return OnKeyDown(wParam, lParam);
+
+			}
+
+			// 既定の処理へ向かう.
+			break;
 
 		// コマンド処理された時.
 		case WM_COMMAND:
@@ -263,7 +344,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 		
 		// スクロールされた時.
 		case WM_VSCROLL:
@@ -287,18 +368,35 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			}
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 		// それ以外の時.
 		default:
 
 			// 既定の処理へ向かう.
-			break;	// 抜けてDefWindowProcに向かう.
+			break;
 
 	}
 
-	// 既定の処理
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);	// DefWindowProcに任せる.
+	// 配列の宣言.
+	TCHAR tszClassName[256] = { 0 };	// tszClassNameを0で初期化.
+
+	// ウィンドウハンドルからウィンドウクラス名を取得.
+	GetClassName(hwnd, tszClassName, 256);	// GetClassNameでウィンドウクラス名を取得.
+
+	// tszClassNameがm_mapBaseWndProcMapのキーにあれば.
+	if (m_mapBaseWndProcMap.find(tszClassName) != m_mapBaseWndProcMap.end()) {	// みつかったら.
+
+		// 既定ののプロシージャに任せる.
+		return CallWindowProc(m_mapBaseWndProcMap[tszClassName], hwnd, uMsg, wParam, lParam);	// CallWindowProcでこのメッセージをm_mapBaseWndProcMap[tszClassName]に任せる.
+
+	}
+	else {
+
+		// そうでないなら, DefWindowProcに任せる.
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+
+	}
 
 }
 
@@ -324,6 +422,13 @@ void CWindow::OnSize(UINT nType, int cx, int cy){
 
 // 画面描画の更新を要求された時.
 void CWindow::OnPaint(){
+
+}
+
+// キーが押された時.
+int CWindow::OnKeyDown(WPARAM wParam, LPARAM lParam){
+
+	return 0;
 
 }
 

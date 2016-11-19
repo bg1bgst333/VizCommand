@@ -5,7 +5,7 @@
 BOOL CEdit::Create(int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance){
 	
 	// クラス名"Edit"の子ウィンドウ作成.
-	return CWindow::Create(_T("Edit"), _T(""), WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOVSCROLL, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// CWindow::Createでクラス名"EditPanel"の子ウィンドウを作成.
+	return CWindow::Create(_T("Edit"), _T(""), WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_AUTOVSCROLL, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance, TRUE);	// CWindow::Createでクラス名"EditPanel"の子ウィンドウを作成.
 
 }
 
@@ -45,6 +45,19 @@ void CEdit::OnDestroy(){
 // ウィンドウを閉じる時のハンドラOnClose.
 int CEdit::OnClose(){
 
+	return 0;
+
+}
+
+// キーが押された時.
+int CEdit::OnKeyDown(WPARAM wParam, LPARAM lParam){
+
+	// リターンキーが押されたらメッセージボックス.
+	if (wParam == VK_RETURN) {
+		MessageBox(m_hWnd, _T("リターンキーが押された!"), _T("VizCommand"), MB_OK);
+	}
+
+	// 0を返す.
 	return 0;
 
 }

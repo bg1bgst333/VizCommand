@@ -24,5 +24,6 @@ class CEdit : CWindow {
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual void OnDestroy();	// ウィンドウ破棄時のハンドラOnDestroy.
 		virtual int OnClose();	// ウィンドウを閉じる時のハンドラOnClose.
+		virtual int OnKeyDown(WPARAM wParam, LPARAM lParam);	// キーが押された時.
 
 };
