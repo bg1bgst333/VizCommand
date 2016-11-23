@@ -153,6 +153,8 @@
     <ClCompile Include="EditPanel.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="ScalableEdit.cpp" />
+    <ClCompile Include="ScalableEditPanel.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowListItem.cpp" />
     <ClCompile Include="WindowListItemsPanel.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ScalableEdit.h" />
+    <ClInclude Include="ScalableEditPanel.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowListItem.h" />
     <ClInclude Include="WindowListItemsPanel.h" />

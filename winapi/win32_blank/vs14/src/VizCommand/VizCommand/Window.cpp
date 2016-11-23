@@ -324,8 +324,13 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// WM_KEYDOWNブロック
 			{
 
-				// OnKeyDownに任せる.	
-				return OnKeyDown(wParam, lParam);
+				// OnKeyDownに任せる.
+				if (OnKeyDown(wParam, lParam) != 0) {
+
+					// 0以外なら0を返す.(キーの処理がDefWindowProcで実行されない.)
+					return 0;
+				
+				}
 
 			}
 
@@ -364,6 +369,20 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 				// OnVScrollに任せる.
 				OnVScroll(nSBCode, nPos, hScroll);
+
+			}
+
+			// 既定の処理へ向かう.
+			break;
+
+		// 子ウィンドウのサイズが変更された時.(独自メッセージ)
+		case UM_SIZECHILD:
+
+			// UM_SIZECHILDブロック
+			{
+
+				// 独自のハンドラ
+				OnSizeChild(hwnd, LOWORD(wParam), HIWORD(wParam), (HWND)lParam);
 
 			}
 
@@ -442,5 +461,10 @@ BOOL CWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
 
 // 垂直スクロール時のハンドラOnVScroll.
 void CWindow::OnVScroll(UINT nSBCode, UINT nPos, HWND hScroll){
+
+}
+
+// 子ウィンドウのサイズが変更された時.(独自メッセージ)
+void CWindow::OnSizeChild(HWND hWnd, int width, int height, HWND hChildWnd) {
 
 }

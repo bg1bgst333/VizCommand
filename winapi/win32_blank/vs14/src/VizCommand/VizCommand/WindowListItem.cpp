@@ -11,7 +11,7 @@ BOOL CWindowListItem::Create(int x, int y, int iWidth, int iHeight, HWND hWndPar
 	m_iHeight = iHeight;	// m_iHeightにiHeightをセット.
 
 	// クラス名"WindowListItem"の子ウィンドウを作成.
-	return CWindow::Create(_T("WindowListItem"), _T(""), WS_CHILD | WS_VISIBLE/* | WS_BORDER*/, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// CWindow::Createでクラス名"WindowListItem"の子ウィンドウを作成.
+	return CWindow::Create(_T("WindowListItem"), _T(""), WS_CHILD | WS_VISIBLE, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// CWindow::Createでクラス名"WindowListItem"の子ウィンドウを作成.
 
 }
 
@@ -78,7 +78,7 @@ void CWindowListItem::OnPaint() {
 	HPEN hOldPen;
 	HBRUSH hOldBrush;
 	HPEN hGreenPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
-	HBRUSH hWhiteBrush = CreateSolidBrush(RGB(255, 255, 255));
+	HBRUSH hWhiteBrush = CreateSolidBrush(RGB(0, 0, 255));
 	hOldPen = (HPEN)SelectObject(hDC, hGreenPen);
 	hOldBrush = (HBRUSH)SelectObject(hDC, hWhiteBrush);
 	Rectangle(hDC, m_x, m_y, m_iWidth, m_iHeight);

@@ -9,7 +9,7 @@
 #include "WindowListItem.h"	// ウィンドウリストアイテムクラス
 
 // リソースIDの定義.
-#define IDC_WINDOW_LIST_ITEMS_PANEL WM_USER + 200
+#define IDC_WINDOW_LIST_ITEMS_PANEL WM_APP + 200
 
 // ウィンドウリストアイテムズパネルクラス
 class CWindowListItemsPanel : public CWindow {	// CWindowの派生クラス

@@ -6,7 +6,7 @@
 #include "Window.h"		// ウィンドウクラス
 
 // エディットコントロールクラス
-class CEdit : CWindow {
+class CEdit : public CWindow {
 
 	// publicメンバ
 	public:

@@ -1,6 +1,6 @@
 // ヘッダのインクルード
 #include "MainWindow.h"	// メインウィンドウクラス
-#include "EditPanel.h"	// エディットパネルクラス
+#include "ScalableEditPanel.h"	// スケーラブルエディットパネルクラス
 #include "WindowListItem.h"	// ウィンドウリストアイテムクラス
 
 // OnCloseとOnDestroyの間に子ウィンドウなどを破棄するメンバ関数Destroy.
@@ -31,8 +31,8 @@ void CMainWindow::AddEdit(int index, int x, int y, int w, int h, HINSTANCE hInst
 
 	// エディットパネルの設置.
 	CWindowListItem *m_pWindowListItem = m_pWindowListView->Get(index);	// index番目のアイテムを取得.
-	CEditPanel *pEditPanel = new CEditPanel();	// pEditPanelオブジェクトの作成.
-	pEditPanel->Create(x, y, w, h, m_pWindowListItem->m_hWnd, (HMENU)IDC_EDIT_PANEL + index, hInstance);	// pEditPanel->Createで生成.
+	CScalableEditPanel *pEditPanel = new CScalableEditPanel();	// pEditPanelオブジェクトの作成.
+	pEditPanel->Create(x, y, w, m_pWindowListItem->m_hWnd, (HMENU)IDC_EDIT_PANEL + index, hInstance);	// pEditPanel->Createで生成.
 	TCHAR tszTemp[256] = { 0 };
 	_stprintf_s(tszTemp, _T("WindowListItem[%d].Edit"), index);	// インデックスをタグ名に変換.
 	m_pChildMap->Add(tszTemp, new CChildMapItem(index, pEditPanel));	// チャイルドマップに追加.
@@ -95,7 +95,8 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 	TCHAR tszTemp[256] = { 0 };
 	_stprintf_s(tszTemp, _T("WindowListItem[%d].Edit"), 0);	// インデックスをタグ名に変換.
 	CChildMapItem *pItem = m_pChildMap->Get(tszTemp);
-	::MoveWindow(pItem->m_pWindow->m_hWnd, 0, 0, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iWidth, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iHeight, TRUE);	// ウィンドウリストアイテムよりひとまわり小さい子ウィンドウ.
+	CScalableEditPanel *pScalableEditPanel = (CScalableEditPanel *)pItem->m_pWindow;
+	::MoveWindow(pScalableEditPanel->m_hWnd, 0, 0, m_pWindowListView->m_pWindowListItemsPanel->Get(0)->m_iWidth, pScalableEditPanel->m_iHeight, TRUE);	// ウィンドウリストアイテムよりひとまわり小さい子ウィンドウ.
 
 }
 

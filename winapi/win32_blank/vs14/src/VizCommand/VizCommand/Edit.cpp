@@ -52,11 +52,6 @@ int CEdit::OnClose(){
 // キーが押された時.
 int CEdit::OnKeyDown(WPARAM wParam, LPARAM lParam){
 
-	// リターンキーが押されたらメッセージボックス.
-	if (wParam == VK_RETURN) {
-		MessageBox(m_hWnd, _T("リターンキーが押された!"), _T("VizCommand"), MB_OK);
-	}
-
 	// 0を返す.
 	return 0;
 

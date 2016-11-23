@@ -7,6 +7,9 @@
 #include <tchar.h>		// TCHAR型
 #include <map>			// std::map
 
+// マクロの定義
+#define UM_SIZECHILD WM_APP + 1000
+
 // UNICODE切り替え
 #ifdef UNICODE
 #define tstring std::wstring
@@ -52,5 +55,6 @@ class CWindow {
 		virtual int OnKeyDown(WPARAM wParam, LPARAM lParam);	// キーが押された時.
 		virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);	// コマンド処理時のハンドラOnCommand.
 		virtual void OnVScroll(UINT nSBCode, UINT nPos, HWND hScroll);	// 垂直スクロール時のハンドラOnVScroll.
+		virtual void OnSizeChild(HWND hWnd, int width, int height, HWND hChildWnd);	// 子ウィンドウのサイズが変更された時(独自メッセージ)
 
 };

@@ -7,7 +7,7 @@
 #include "Edit.h"		// エディットクラス
 
 // リソースIDの定義.
-#define IDC_EDIT_PANEL WM_USER + 400
+#define IDC_EDIT_PANEL WM_APP + 400
 
 // エディットパネルクラス
 class CEditPanel : public CWindow {	// CWindowの派生クラス
