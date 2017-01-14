@@ -21,7 +21,7 @@ class CApplication {
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
 		CApplication();	// コンストラクタCApplication()
-		~CApplication();	// デストラクタ~CApplication()
+		virtual ~CApplication();	// デストラクタ~CApplication()
 
 		// メンバ関数
 		virtual BOOL InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int nShowCmd);	// アプリケーション初期化関数InitInstance

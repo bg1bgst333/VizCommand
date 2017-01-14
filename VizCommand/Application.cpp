@@ -30,18 +30,7 @@ BOOL CApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int nShow
 	// ウィンドウクラスの登録
 	CWindow::RegisterClass(hInstance, _T("Window"));	// CWindow::RegisterClassでウィンドウクラス"Window"を登録.
 	
-	// ウィンドウオブジェクトの生成
-	m_pMainWindow = new CWindow();	// CWindowオブジェクトを作成し, アドレスをm_pMainWindowに格納.
-
-	// ウィンドウ作成
-	if (!m_pMainWindow->Create(_T("Window"), _T("VizCommand"), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance)) {	// m_pMainWindow->Createでの作成が失敗なら.
-		return FALSE;	// FALSEを返す.
-	}
-
-	// ウィンドウ表示
-	m_pMainWindow->ShowWindow(SW_SHOW);	// m_pMainWindow->ShowWindowで表示.
-
-	// 成功なのでTRUEを返す.
+	// TRUEを返す.
 	return TRUE;	// TRUEを返す.
 
 }

@@ -35,7 +35,7 @@ class CWindow {
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
 		CWindow();	// コンストラクタCWindow()
-		~CWindow();	// デストラクタ~CWindow()
+		virtual ~CWindow();	// デストラクタ~CWindow()
 
 		// staticメンバ関数
 		static BOOL RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName);	// ウィンドウクラス登録関数RegisterClass
@@ -43,6 +43,7 @@ class CWindow {
 
 		// メンバ関数
 		virtual BOOL Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance);	// ウィンドウ作成関数Create
+		virtual BOOL Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance);	// ウィンドウ作成関数Create(lpctszClassName省略)
 		virtual BOOL ShowWindow(int nCmdShow);	// ウィンドウ表示関数ShowWindow
 		virtual LRESULT DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);	// StaticWindowProcから各ウィンドウオブジェクトごとに呼び出されるサブウィンドウプロシージャDynamicWindowProc.
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.

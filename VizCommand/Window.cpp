@@ -152,6 +152,14 @@ BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dw
 
 }
 
+// ウィンドウ作成関数Create(lpctszClassName省略)
+BOOL CWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance){
+
+	// ここに来る場合はウィンドウクラス"Window"のウィンドウとして作成.
+	return Create(_T("Window"), lpctszWindowName, dwStyle, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// ウィンドウクラスを"Window"にしてCreateのフルバージョンを呼ぶ.
+	
+}
+
 // ウィンドウ表示関数ShowWindow
 BOOL CWindow::ShowWindow(int nCmdShow){
 
