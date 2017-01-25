@@ -149,6 +149,8 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicApplication.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
+    <ClCompile Include="StandardApplication.cpp" />
+    <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -157,6 +159,8 @@
     <ClInclude Include="BasicApplication.h" />
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StandardApplication.h" />
+    <ClInclude Include="UserControl.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

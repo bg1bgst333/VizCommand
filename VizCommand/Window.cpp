@@ -66,6 +66,37 @@ BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName){
 
 }
 
+// ウィンドウクラス登録関数RegisterClass(メニュー指定)
+BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, UINT nID) {
+
+	// 変数の宣言
+	WNDCLASS wc;	// ウィンドウクラスwc
+
+	// ウィンドウクラスの設定
+	wc.lpszClassName = lpctszClassName;						// ウィンドウクラス名はlpctszClassName.
+	wc.style = CS_HREDRAW | CS_VREDRAW;						// スタイルはとりあえずCS_HREDRAW | CS_VREDRAW.
+	wc.lpfnWndProc = StaticWindowProc;						// ウィンドウプロシージャにStaticWindowProc.
+	wc.hInstance = hInstance;								// インスタンスハンドルは引数のhInstanceをセット.
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);				// アプリケーション既定アイコンIDI_APPLICATION.
+	wc.hCursor = LoadCursor(hInstance, IDC_ARROW);			// システム既定の矢印カーソルIDC_ARROW.
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);	// 背景は白(WHITE_BRUSH).
+	wc.lpszMenuName = MAKEINTRESOURCE(nID);					// メニューにはnIDをMAKEINTRESOURCEで変換したもの.
+	wc.cbClsExtra = 0;										// とりあえず0でいい.
+	wc.cbWndExtra = 0;										// とりあえず0でいい.
+
+	// ウィンドウクラスの登録
+	if (!::RegisterClass(&wc)) {	// RegisterClassにwcをセットして登録.
+
+		// エラー処理
+		return FALSE;	// 失敗なのでFALSEを返す.
+
+	}
+
+	// 成功ならTRUE.
+	return TRUE;	// 成功なのでTRUEを返す.
+
+}
+
 // 独自のウィンドウプロシージャStaticWindowProc関数
 LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 
@@ -202,6 +233,20 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// コマンドが処理された時.
+		case WM_COMMAND:
+
+			// WM_COMMANDブロック
+			{
+
+				// OnCommandに任せる.
+				return OnCommand(wParam, lParam) ? 0 : 1;	// wParamとlParamを渡して任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// それ以外の時.
 		default:
 
@@ -228,5 +273,13 @@ void CWindow::OnDestroy(){
 
 	// メッセージループ終了.
 	PostQuitMessage(0);	// PostQuitMessageでメッセージループを抜けさせる.
+
+}
+
+// コマンド処理時のハンドラOnCommand.
+BOOL CWindow::OnCommand(WPARAM wParam, LPARAM lParam){
+
+	// とりあえずTRUEを返す.
+	return TRUE;	// TRUEを返す.
 
 }
