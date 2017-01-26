@@ -4,6 +4,7 @@
 // 独自のヘッダ
 #include "Window.h"			// ウィンドウクラス
 #include "UserControl.h"	// ユーザコントロールクラス
+#include "CustomControl.h"	// カスタムコントロールクラス
 
 // ベーシックウィンドウクラスCBasicWindow
 class CBasicWindow : public CWindow {
@@ -13,6 +14,7 @@ class CBasicWindow : public CWindow {
 
 		// publicメンバ変数
 		CUserControl *m_pUserControl;	// CUserControl *型ユーザコントロールオブジェクトポインタm_pUserControl
+		CCustomControl *m_pCustomControl;	// CCustomControl *型カスタムコントロールオブジェクトポインタm_pCustomControl
 
 		// publicメンバ関数
 		// staticメンバ関数

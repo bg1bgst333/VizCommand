@@ -149,6 +149,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicApplication.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
+    <ClCompile Include="CustomControl.cpp" />
     <ClCompile Include="StandardApplication.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BasicApplication.h" />
     <ClInclude Include="BasicWindow.h" />
+    <ClInclude Include="CustomControl.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StandardApplication.h" />
     <ClInclude Include="UserControl.h" />
