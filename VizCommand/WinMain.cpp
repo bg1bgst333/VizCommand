@@ -2,9 +2,8 @@
 // 既定のヘッダ
 #include <windows.h>	// 標準WindowsAPI
 #include <tchar.h>		// TCHAR型
-// ヘッダのインクルード
 // 独自のヘッダ
-#include "StandardApplication.h"	// スタンダードアプリケーションクラス
+#include "MainApplication.h"	// メインアプリケーションクラス
 
 // _tWinMain関数
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nShowCmd) {
@@ -12,8 +11,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	// 変数の宣言
 	CApplication *pApp;	// CApplicationオブジェクトポインタpApp
 
-	// CStandardApplicationオブジェクトの初期化
-	pApp = new CStandardApplication();	// CStandardApplicationオブジェクトを作成し, pAppにアドレスを格納.
+	// CMainApplicationオブジェクトの初期化
+	pApp = new CMainApplication();	// CMainApplicationオブジェクトを作成し, pAppにアドレスを格納.
 	if (!pApp->InitInstance(hInstance, lpCmdLine, nShowCmd)){	// pApp->InitInstanceで初期化処理が失敗なら.
 
 		// エラー処理

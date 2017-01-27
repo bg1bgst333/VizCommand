@@ -2,21 +2,27 @@
 #pragma once	// #pragma onceで二重インクルード防止.
 
 // 独自のヘッダ
-#include "Window.h"			// ウィンドウクラス
+#include "BasicWindow.h"	// ベーシックウィンドウクラス
+#include "CustomControl.h"	// カスタムコントロールクラス
+#include "UserControl.h"	// ユーザコントロールクラス
 
-// ベーシックウィンドウクラスCBasicWindow
-class CBasicWindow : public CWindow {
+// メインウィンドウクラスCMainWindow
+class CMainWindow : public CBasicWindow {
 
 	// publicメンバ
 	public:
+
+		// publicメンバ変数
+		CUserControl *m_pUserControl;		// CUserControl *型ユーザコントロールオブジェクトポインタm_pUserControl
+		CCustomControl *m_pCustomControl;	// CCustomControl *型カスタムコントロールオブジェクトポインタm_pCustomControl
 
 		// publicメンバ関数
 		// staticメンバ関数
 		static BOOL RegisterClass(HINSTANCE hInstance);	// ウィンドウクラス登録関数RegisterClass
 
 		// コンストラクタ・デストラクタ
-		CBasicWindow();	// コンストラクタCBasicWindow()
-		virtual ~CBasicWindow();	// デストラクタ~CBasicWindow()
+		CMainWindow();			// コンストラクタCMainWindow()
+		virtual ~CMainWindow();	// デストラクタ~CMainWindow()
 
 		// メンバ関数
 		virtual BOOL Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance);	// ウィンドウ作成関数Create(lpctszClassName省略)
