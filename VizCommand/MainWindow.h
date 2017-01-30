@@ -3,7 +3,7 @@
 
 // 独自のヘッダ
 #include "BasicWindow.h"	// ベーシックウィンドウクラス
-#include "CustomControl.h"	// カスタムコントロールクラス
+#include "EditBox.h"		// エディットボックスクラス
 #include "UserControl.h"	// ユーザコントロールクラス
 
 // メインウィンドウクラスCMainWindow
@@ -14,7 +14,7 @@ class CMainWindow : public CBasicWindow {
 
 		// publicメンバ変数
 		CUserControl *m_pUserControl;		// CUserControl *型ユーザコントロールオブジェクトポインタm_pUserControl
-		CCustomControl *m_pCustomControl;	// CCustomControl *型カスタムコントロールオブジェクトポインタm_pCustomControl
+		CEditBox *m_pEditBox;				// CEditBox *型エディットボックスオブジェクトポインタm_pEditBox
 
 		// publicメンバ関数
 		// staticメンバ関数
