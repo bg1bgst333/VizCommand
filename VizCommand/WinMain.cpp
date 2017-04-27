@@ -2,6 +2,7 @@
 // 既定のヘッダ
 #include <windows.h>	// 標準WindowsAPI
 #include <tchar.h>		// TCHAR型
+
 // 独自のヘッダ
 #include "MainApplication.h"	// メインアプリケーションクラス
 

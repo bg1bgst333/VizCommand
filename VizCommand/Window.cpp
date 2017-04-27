@@ -24,10 +24,7 @@ CWindow::CWindow(){
 CWindow::~CWindow() {
 
 	// メンバ変数の終了処理
-	if (m_hWnd != NULL) {	// m_hWndがNULLでなければ.
-		DestroyWindow(m_hWnd);	// m_hWndを破棄.
-		m_hWnd = NULL;	// m_hWndにNULLを代入.
-	}
+	Destroy();		// Destroyでウィンドウを破棄.
 	m_x = 0;		// m_xに0を代入.
 	m_y = 0;		// m_yに0を代入.
 	m_iWidth = 0;	// m_iWidthに0を代入.
@@ -36,7 +33,7 @@ CWindow::~CWindow() {
 }
 
 // ウィンドウクラス登録関数RegisterClass
-BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName){
+BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName) {
 
 	// 変数の宣言
 	WNDCLASS wc;	// ウィンドウクラスwc
@@ -98,7 +95,7 @@ BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, UINT n
 }
 
 // 独自のウィンドウプロシージャStaticWindowProc関数
-LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
+LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	// ポインタの初期化
 	CWindow *pWindow = NULL;	// CWindowオブジェクトポインタpWIndowをNULLに初期化.
@@ -133,7 +130,7 @@ LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 			{
 
 				// hwndでCWindowオブジェクトポインタが引けたら, pWindowに格納.
-				if (CWindow::m_mapWindowMap.find(hwnd) != CWindow::m_mapWindowMap.end()){	// findでキーをhwndとするCWindowオブジェクトポインタが見つかったら.
+				if (CWindow::m_mapWindowMap.find(hwnd) != CWindow::m_mapWindowMap.end()) {	// findでキーをhwndとするCWindowオブジェクトポインタが見つかったら.
 					pWindow = CWindow::m_mapWindowMap[hwnd];	// pWindowにhwndで引けるCWindowオブジェクトポインタを格納.
 				}
 
@@ -161,7 +158,7 @@ LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
 }
 
 // ウィンドウ作成関数Create
-BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance){
+BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance) {
 
 	// ウィンドウの位置・サイズをセット.
 	m_x = x;				// m_xにxを代入.
@@ -184,23 +181,98 @@ BOOL CWindow::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWORD dw
 }
 
 // ウィンドウ作成関数Create(lpctszClassName省略)
-BOOL CWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance){
+BOOL CWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance) {
 
 	// ここに来る場合はウィンドウクラス"Window"のウィンドウとして作成.
 	return Create(_T("Window"), lpctszWindowName, dwStyle, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// ウィンドウクラスを"Window"にしてCreateのフルバージョンを呼ぶ.
-	
+
+}
+
+// ウィンドウ破棄関数Destroy
+void CWindow::Destroy() {
+
+	// メンバ変数の終了処理
+	if (m_hWnd != NULL) {	// m_hWndがNULLでなければ.
+		DestroyWindow(m_hWnd);	// m_hWndを破棄.
+		m_hWnd = NULL;	// m_hWndにNULLを代入.
+	}
+
 }
 
 // ウィンドウ表示関数ShowWindow
-BOOL CWindow::ShowWindow(int nCmdShow){
+BOOL CWindow::ShowWindow(int nCmdShow) {
 
 	// ウィンドウの表示
 	return ::ShowWindow(m_hWnd, nCmdShow);	// WindowsAPIのShowWindowでm_hWndを表示.
 
 }
 
+// 位置とサイズを変更する関数MoveWindow.
+BOOL CWindow::MoveWindow(int x, int y, int iWidth, int iHeight) {
+
+	// エディットボックスのサイズを変更する.
+	m_x = x;				// m_xにxをセット.
+	m_y = y;				// m_yにyをセット.
+	m_iWidth = iWidth;		// m_iWidthにiWidthをセット.
+	m_iHeight = iHeight;	// m_iHeightにiHeightをセット.	
+	return ::MoveWindow(m_hWnd, m_x, m_y, m_iWidth, m_iHeight, TRUE);	// WindowsAPIのMoveWindowで位置とサイズを変更.
+
+}
+
+// 相対座標リサイズor移動関数MoveWindow.
+BOOL CWindow::MoveWindow(BOOL bResize, int iRelativeHorizontal, int iRelativeVertical) {
+
+	// リサイズか移動かを決定.
+	if (bResize) {	// リサイズ
+		m_iWidth = m_iWidth + iRelativeHorizontal;	// 幅の増加.
+		m_iHeight = m_iHeight + iRelativeVertical;	// 高さの増加.
+	}
+	else {	// 移動.
+		m_x = m_x + iRelativeHorizontal;	// 右に移動.
+		m_y = m_y + iRelativeVertical;		// 下に移動.
+	}
+	return ::MoveWindow(m_hWnd, m_x, m_y, m_iWidth, m_iHeight, TRUE);	// WindowsAPIのMoveWindowで位置とサイズを変更.
+
+}
+
+// 絶対座標で指定(xywhのどれか.)の値だけ変更する関数MoveWindow.
+BOOL CWindow::MoveWindow(int xywh, int value) {
+
+	// xywhのどれかを決定.
+	if (xywh == 0) {	// x
+		m_x = value;
+	}
+	else if (xywh == 1) {	// y
+		m_y = value;
+	}
+	else if (xywh == 2) {	// w
+		m_iWidth = value;
+	}
+	else if (xywh == 3) {	// h
+		m_iHeight = value;
+	}
+	return ::MoveWindow(m_hWnd, m_x, m_y, m_iWidth, m_iHeight, TRUE);	// WindowsAPIのMoveWindowで位置とサイズを変更.
+
+}
+
+// ウィンドウ名の長さ取得関数GetWindowTextLength.
+int CWindow::GetWindowTextLength() {
+
+	// ウィンドウ名の長さを取得.
+	return ::GetWindowTextLength(m_hWnd);	// WindowsAPIのGetWindowTextLengthでm_hWndのウィンドウ名の長さを取得し, returnで戻り値として返す.
+
+}
+
+// ウィンドウ名取得関数GetWindowText.
+int CWindow::GetWindowText(LPTSTR lpszStringBuf, int nMaxCount) {
+
+	// ウィンドウ名を取得.
+	return ::GetWindowText(m_hWnd, lpszStringBuf, nMaxCount);	// WindowsAPIのGetWindowTextでm_hWndのウィンドウ名を取得し, returnで戻り値として返す.
+
+}
+
 // StaticWindowProcから各ウィンドウオブジェクトごとに呼び出されるサブウィンドウプロシージャDynamicWindowProc.
-LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
+LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	// ウィンドウメッセージ処理
 	switch (uMsg) {
@@ -213,7 +285,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 				// OnCreateに任せる.
 				return OnCreate(hwnd, (LPCREATESTRUCT)lParam);	// hwndとlParamをOnCreateに渡し, あとは任せる.
-
+	
 			}
 
 			// 既定の処理へ向かう.
@@ -227,7 +299,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 				// OnDestroyに任せる.
 				OnDestroy();	// OnDestroyを呼ぶ.
-				
+
 			}
 
 			// 既定の処理へ向かう.
@@ -241,6 +313,83 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 				// OnCommandに任せる.
 				return OnCommand(wParam, lParam) ? 0 : 1;	// wParamとlParamを渡して任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// ウィンドウサイズが変更された時.
+		case WM_SIZE:
+
+			// WM_SIZEブロック
+			{
+
+				// 変数の初期化.
+				UINT nType = wParam;		// nTypeをwParamで初期化.
+				int cx = LOWORD(lParam);	// cxをLOWORD(lParam)で初期化.
+				int cy = HIWORD(lParam);	// cyをHIWORD(lParam)で初期化.
+
+				// OnSizeに任せる.
+				OnSize(nType, cx, cy);	// OnSizeにnType, cx, cyを渡す.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// ウィンドウの描画を要求された時.
+		case WM_PAINT:
+
+			// WM_PAINTブロック
+			{
+
+				// OnPaintに任せる.
+				OnPaint();	// OnPaintを呼ぶ.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// 水平方向スクロールバーイベント時.
+		case WM_HSCROLL:
+
+			// WM_HSCROLLブロック
+			{
+
+				// OnHScrollに任せる.
+				OnHScroll(LOWORD(wParam), HIWORD(wParam));	// OnHScrollに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// 垂直方向スクロールバーイベント時.
+		case WM_VSCROLL:
+
+			// WM_VSCROLLブロック
+			{
+
+				// OnVScrollに任せる.
+				OnVScroll(LOWORD(wParam), HIWORD(wParam));	// OnVScrollに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// ウィンドウを閉じた時.
+		case WM_CLOSE:
+
+			// WM_CLOSEブロック
+			{
+
+				// OnCloseに任せる.
+				if (OnClose() != 0) {	// 0以外なら
+					return 0;	// 0を返す.
+				}
 
 			}
 
@@ -261,7 +410,7 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 }
 
 // ウィンドウ作成時のハンドラOnCreate.
-int CWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct){
+int CWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ウィンドウ作成成功
 	return 0;	// 成功なら0を返す.
@@ -269,7 +418,7 @@ int CWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct){
 }
 
 // ウィンドウ破棄時のハンドラOnDestroy.
-void CWindow::OnDestroy(){
+void CWindow::OnDestroy() {
 
 	// メッセージループ終了.
 	PostQuitMessage(0);	// PostQuitMessageでメッセージループを抜けさせる.
@@ -277,9 +426,42 @@ void CWindow::OnDestroy(){
 }
 
 // コマンド処理時のハンドラOnCommand.
-BOOL CWindow::OnCommand(WPARAM wParam, LPARAM lParam){
+BOOL CWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
 
 	// とりあえずTRUEを返す.
 	return TRUE;	// TRUEを返す.
+
+}
+
+// ウィンドウサイズが変更された時のハンドラOnSize.
+void CWindow::OnSize(UINT nType, int cx, int cy) {
+
+	// 特に何もしない.
+
+}
+
+// ウィンドウの描画を要求された時のハンドラOnPaint.
+void CWindow::OnPaint() {
+
+}
+
+// 水平方向スクロールバーイベント時のハンドラOnHScroll.
+void CWindow::OnHScroll(UINT nSBCode, UINT nPos) {
+
+}
+
+// 垂直方向スクロールバーイベント時のハンドラOnVScroll.
+void CWindow::OnVScroll(UINT nSBCode, UINT nPos) {
+
+}
+
+// ウィンドウを閉じる時のハンドラOnClose.
+int CWindow::OnClose() {
+
+	// このウィンドウを破棄.
+	Destroy();	// Destroyでこのウィンドウを破棄.
+
+	// 0を返す.
+	return 0;	// 0を返してウィンドウを閉じる.
 
 }

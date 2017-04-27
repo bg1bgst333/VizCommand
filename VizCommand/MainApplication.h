@@ -1,7 +1,6 @@
 // 二重インクルード防止
 #pragma once	// #pragma onceで二重インクルード防止.
 
-// ヘッダのインクルード
 // 独自のヘッダ
 #include "StandardApplication.h"	// スタンダードアプリケーションクラス
 

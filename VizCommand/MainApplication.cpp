@@ -18,10 +18,10 @@ BOOL CMainApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int n
 	CStandardApplication::InitInstance(hInstance, lpCmdLine, nShowCmd);	// CStandardApplication::InitInstanceを呼ぶ.
 
 	// メインウィンドウクラスの登録
-	CMainWindow::RegisterClass(hInstance);	// CMainWindow::RegisterClassでウィンドウクラス"MainWindow"を登録.
+	CMainWindow::RegisterClass(hInstance);	// CMainWindow::RegisterClassでメニューIDがIDR_MAINMENUなウィンドウクラス"MainWindow"を登録.
 
-	// ユーザコントロールクラスの登録
-	CUserControl::RegisterClass(hInstance, _T("UserControl"));	// CUserControl::RegisterClassで独自のウィンドウクラス"UserControl"を登録.
+	// ウィンドウリストコントロールクラスの登録
+	CWindowListControl::RegisterClass(hInstance);	// CWindowListControl::RegisterClassでウィンドウリストコントロールクラスの登録.
 
 	// メインウィンドウオブジェクトの生成
 	m_pMainWindow = new CMainWindow();	// CMainWindowオブジェクトを作成し, アドレスをm_pMainWindowに格納.

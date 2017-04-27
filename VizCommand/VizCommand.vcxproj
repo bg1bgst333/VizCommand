@@ -153,9 +153,13 @@
     <ClCompile Include="EditBox.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="PictureBox.cpp" />
     <ClCompile Include="StandardApplication.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WindowListControl.cpp" />
+    <ClCompile Include="WindowListItem.cpp" />
+    <ClCompile Include="WindowListItemsPanel.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,10 +170,14 @@
     <ClInclude Include="EditBox.h" />
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="PictureBox.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StandardApplication.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WindowListControl.h" />
+    <ClInclude Include="WindowListItem.h" />
+    <ClInclude Include="WindowListItemsPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VizCommand.rc" />

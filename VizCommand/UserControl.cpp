@@ -25,3 +25,8 @@ BOOL CUserControl::Create(LPCTSTR lpctszClassName, LPCTSTR lpctszWindowName, DWO
 	return CWindow::Create(lpctszClassName, lpctszWindowName, dwStyle | WS_CHILD | WS_VISIBLE, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// ウィンドウクラスをlpctszClassNameにして, dwStyleにWS_CHILDとWS_VISIBLEを追加して, Createのフルバージョンを呼ぶ.
 
 }
+
+// ウィンドウ破棄時のハンドラOnDestroy.
+void CUserControl::OnDestroy() {
+
+}

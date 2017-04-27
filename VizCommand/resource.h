@@ -12,3 +12,9 @@
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
+
+// ì∆é©ÇÃÉäÉ\Å[ÉXID
+#define IDC_WINDOWLISTCONTROL1				(WM_APP + 1)	// 32768 + 4( = 32772)
+#define IDC_WINDOWLISTITEMSPANEL1			(WM_APP + 2)	// 32768 + 5( = 32773)
+#define IDC_WINDOWLISTITEM_ID_START			(WM_APP + 3)	// 32768 + 6( = 32774)
+#define IDC_WINDOWLISTITEM_CHILD_ID_START	(WM_APP + 103)	// 32768 + 106( = 32874)
