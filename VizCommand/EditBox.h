@@ -20,6 +20,7 @@ class CEditBox : public CCustomControl {
 
 		// メンバ関数
 		virtual BOOL Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance);	// ウィンドウ作成関数Create(lpctszClassName省略)
+		virtual void Destroy();	// ウィンドウ破棄関数Destroy
 		virtual BOOL CreateTextBuffer();	// エディットボックスのテキストを格納するバッファ作成関数CreateTextBuffer.
 		virtual void DestroyTextBuffer();	// エディットボックスのテキストを格納するバッファ破棄関数DestroyTextBuffer.
 		virtual int GetWindowTextLength();	// エディットボックスのテキストの長さ取得関数GetWindowTextLength.

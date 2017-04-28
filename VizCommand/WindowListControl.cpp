@@ -89,7 +89,7 @@ int CWindowListControl::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ウィンドウリストアイテムズパネルクラスの作成.
 	m_pWindowListItemsPanel = new CWindowListItemsPanel();	// CWindowListItemsPanelオブジェクトを作成し, ポインタをm_pWindowListItemsPanelに格納.
-	m_pWindowListItemsPanel->Create(_T(""), 0, 30, 0, 300, 10, hwnd, (HMENU)IDC_WINDOWLISTITEMSPANEL1, lpCreateStruct->hInstance);	// m_pWindowListItemsPanel->Createでウィンドウリストアイテムズパネルを作成.(親ウィンドウより小さめ.)
+	m_pWindowListItemsPanel->Create(_T(""), 0, 3, 3, m_iWidth - 3, m_iHeight - 3, hwnd, (HMENU)IDC_WINDOWLISTITEMSPANEL1, lpCreateStruct->hInstance);	// m_pWindowListItemsPanel->Createでウィンドウリストアイテムズパネルを作成.(親ウィンドウより小さめ.)
 
 	// 成功なので0を返す.
 	return 0;

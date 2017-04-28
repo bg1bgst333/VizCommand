@@ -23,6 +23,9 @@ BOOL CMainApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int n
 	// ウィンドウリストコントロールクラスの登録
 	CWindowListControl::RegisterClass(hInstance);	// CWindowListControl::RegisterClassでウィンドウリストコントロールクラスの登録.
 
+	// エディットボックスパネルクラスの登録
+	CEditBoxPanel::RegisterClass(hInstance);	// CEditBoxPanel::RegisterClassでエディットボックスパネルクラスの登録.
+
 	// メインウィンドウオブジェクトの生成
 	m_pMainWindow = new CMainWindow();	// CMainWindowオブジェクトを作成し, アドレスをm_pMainWindowに格納.
 

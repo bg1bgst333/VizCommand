@@ -16,8 +16,8 @@ CEditBox::CEditBox() : CCustomControl() {
 // デストラクタ~CEditBox()
 CEditBox::~CEditBox() {
 
-	// 終了処理
-	DestroyTextBuffer();	// バッファの破棄.
+	// メンバの終了処理.
+	Destroy();	// Destroyで破棄.
 
 }
 
@@ -26,6 +26,17 @@ BOOL CEditBox::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int
 
 	// ウィンドウの作成.
 	return CCustomControl::Create(_T("Edit"), lpctszWindowName, dwStyle, x, y, iWidth, iHeight, hWndParent, hMenu, hInstance);	// CCustomControl::Createでウィンドウを作成し, その戻り値をreturnで返す.
+
+}
+
+// ウィンドウ破棄関数Destroy
+void CEditBox::Destroy() {
+
+	// 破棄処理.
+	DestroyTextBuffer();	// バッファの破棄.
+
+	// 自分のウィンドウも破棄.
+	CWindow::Destroy();	// CWindow::Destroyで自身のウィンドウも破棄.
 
 }
 

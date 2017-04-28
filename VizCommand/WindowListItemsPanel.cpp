@@ -84,11 +84,11 @@ BOOL CWindowListItemsPanel::Insert(LPCTSTR lpctszWindowName, int iIndex, int iHe
 		iIdx = iIndex;	// iIndexをセット.
 	}
 	std::list<CWindowListItem *>::iterator itor = m_lstWindowList.begin();	// イテレータ.
-	int y = 0;
+	int y = 3;
 	for (int i = 0; i < (int)m_lstWindowList.size() + 1; i++) {
 		if (i == iIdx) {
 			pItem = new CWindowListItem();	// 生成.
-			pItem->Create(lpctszWindowName, 0, 25, y, 200, iHeight, m_hWnd, (HMENU)(IDC_WINDOWLISTITEM_ID_START + m_nId), hInstance);	// ウィンドウ生成.
+			pItem->Create(lpctszWindowName, 3, 3, y, m_iWidth - 3, iHeight, m_hWnd, (HMENU)(IDC_WINDOWLISTITEM_ID_START + m_nId), hInstance);	// ウィンドウ生成.
 			iTotalHeight = iTotalHeight + iHeight;	// 挿入するウィンドウの高さを足す.
 			m_lstWindowList.insert(itor, pItem);	// 挿入.
 			m_nId++;

@@ -4,6 +4,7 @@
 // 独自のヘッダ
 #include "BasicWindow.h"		// ベーシックウィンドウクラス
 #include "WindowListControl.h"	// ウィンドウリストコントロールクラス
+#include "EditBoxPanel.h"		// エディットボックスパネルクラス
 #include "resource.h"			// リソース
 
 // メインウィンドウクラスCMainWindow

@@ -3,7 +3,7 @@
 
 // 独自のヘッダ
 #include "MainWindow.h"		// メニューウィンドウクラス
-#include "EditBox.h"		// エディットボックスクラス
+#include "EditBoxPanel.h"	// エディットボックスパネルクラス
 //#include "MainMenuBar.h"	// メインメニューバークラス
 
 // ウィンドウクラス登録関数RegisterClass
@@ -58,14 +58,14 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ウィンドウリストコントロールの作成.
 	m_pWindowListControl = new CWindowListControl();	// // CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
-	m_pWindowListControl->Create(_T(""), WS_HSCROLL | WS_VSCROLL, 50, 50, 400, 300, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.(この時点では, まだWS_BORDERを付けている.)
+	m_pWindowListControl->Create(_T(""), WS_HSCROLL | WS_VSCROLL, 3, 3, m_iWidth - 3, m_iHeight - 3, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.(この時点では, まだWS_BORDERを付けている.)
 
 	// 1つ目のアイテムを挿入.
-	m_pWindowListControl->Insert(_T("0"), 0, 50, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで0番目にウィンドウを挿入.
+	m_pWindowListControl->Insert(_T("0"), 0, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで0番目にウィンドウを挿入.
 	CWindowListItem * pItem = m_pWindowListControl->Get(0);	// m_pWindowListControl->Getで0番目を取得.
-	CEditBox *pEditBox = new CEditBox();	// エディットボックス作成.
-	pEditBox->Create(_T(""), WS_BORDER, 30, 10, 100, 30, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
-	pItem->m_mapChildMap.insert(std::make_pair(_T("EditBox"), pEditBox));	// pItem->m_mapChildMap.insertでマップ登録.
+	CEditBoxPanel *pEditBoxPanel = new CEditBoxPanel();
+	pEditBoxPanel->Create(_T(""), WS_BORDER, 3, 3, pItem->m_iWidth - 6, pItem->m_iHeight - 6, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
+	pItem->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel));	// pItem->m_mapChildMap.insertでマップ登録.
 
 	// 成功.
 	return 0;	// 成功なので0を返す.
