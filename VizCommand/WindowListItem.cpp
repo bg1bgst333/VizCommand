@@ -64,6 +64,22 @@ int CWindowListItem::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 }
 
+// ウィンドウサイズが変更された時のハンドラOnSize.
+void CWindowListItem::OnSize(UINT nType, int cx, int cy) {
+
+	// 実際のウィンドウサイズを格納.
+	m_iWidth = cx;	// m_iWidthにcxをセット.
+	m_iHeight = cy;	// m_iHeightにcyをセット.
+
+	// アイテムの一斉リサイズ.
+	std::map<tstring, CWindow *>::iterator itor = m_mapChildMap.begin();	// イテレータ.
+	while (itor != m_mapChildMap.end()) {
+		itor->second->MoveWindow(2, m_iWidth - (3 * 2));	// 親ウィンドウの幅に合わせる.
+		itor++;
+	}
+
+}
+
 // ウィンドウの描画を要求された時のハンドラOnPaint.
 void CWindowListItem::OnPaint() {
 

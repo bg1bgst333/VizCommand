@@ -55,9 +55,23 @@ int CEditBoxPanel::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// 子エディットボックスの生成.
 	m_pEditBox = new CEditBox();	// CEditBoxオブジェクトを作成し, ポインタをm_pEditBoxに格納.
-	m_pEditBox->Create(_T(""), WS_BORDER | ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_HSCROLL | WS_VSCROLL, 3, 3, m_iWidth - 3, m_iHeight - 3, hwnd, m_nId + 100, lpCreateStruct->hInstance);	// m_pEditBox->Createでエディットボックス作成.
+	m_pEditBox->Create(_T(""), WS_BORDER | ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 3, 3, m_iWidth - (3 * 2), m_iHeight - (3 * 2), hwnd, m_nId + 100, lpCreateStruct->hInstance);	// m_pEditBox->Createでエディットボックス作成.
 
 	// 成功なので0を返す.
 	return 0;
+
+}
+
+// ウィンドウサイズが変更された時のハンドラOnSize.
+void CEditBoxPanel::OnSize(UINT nType, int cx, int cy) {
+
+	// 実際のウィンドウサイズを格納.
+	m_iWidth = cx;	// m_iWidthにcxをセット.
+	m_iHeight = cy;	// m_iHeightにcyをセット.
+
+	// 子ウィンドウのリサイズ
+	if (m_pEditBox != NULL) {
+		m_pEditBox->MoveWindow(3, 3, m_iWidth - (3 * 2), m_iHeight - (3 * 2));
+	}
 
 }

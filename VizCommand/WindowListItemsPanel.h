@@ -36,6 +36,7 @@ class CWindowListItemsPanel : public CUserControl {
 		virtual BOOL Remove(int iIndex);	// アイテム削除関数Remove
 		virtual CWindowListItem *Get(int iIndex);	// アイテム取得関数Get
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
+		virtual void OnSize(UINT nType, int cx, int cy);	// ウィンドウサイズが変更された時のハンドラOnSize.
 		virtual void OnPaint();	// ウィンドウの描画を要求された時のハンドラOnPaint.
 
 };
