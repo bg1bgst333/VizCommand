@@ -150,6 +150,7 @@ BOOL CWindowListItemsPanel::Remove(int iIndex) {
 	for (int i = 0; i < (int)m_lstWindowList.size(); i++) {
 		if (i == iIdx) {
 			iHeight = (*itor)->m_iHeight;	// ‚‚³‚ð•Û‘¶.
+			iHeight = iHeight + (PADDING * 2);
 			(*itor)->Destroy();
 			delete (*itor);
 			m_lstWindowList.remove((*itor));
@@ -158,7 +159,8 @@ BOOL CWindowListItemsPanel::Remove(int iIndex) {
 				itor++;
 			}
 			if (itor != m_lstWindowList.end()) {
-				iTotalHeight = iTotalHeight + (*itor)->m_iHeight;
+				iTotalHeight = iTotalHeight + iHeight;//(*itor)->m_iHeight;
+				//iTotalHeight = iTotalHeight + (PADDING * 2);
 				(*itor)->MoveWindow(false, 0, -iHeight);	// iHeight•ª‚¸‚ç‚·.
 			}
 			else {
@@ -168,6 +170,7 @@ BOOL CWindowListItemsPanel::Remove(int iIndex) {
 		else if (i > iIdx) {
 			if (itor != m_lstWindowList.end()) {
 				iTotalHeight = iTotalHeight + (*itor)->m_iHeight;
+				iTotalHeight = iTotalHeight + (PADDING * 2);
 				(*itor)->MoveWindow(false, 0, -iHeight);	// iHeight•ª‚¸‚ç‚·.
 			}
 			else {
@@ -176,6 +179,7 @@ BOOL CWindowListItemsPanel::Remove(int iIndex) {
 		}
 		else {
 			iTotalHeight = iTotalHeight + (*itor)->m_iHeight;
+			iTotalHeight = iTotalHeight + (PADDING * 2);
 		}
 		if (itor != m_lstWindowList.end()) {
 			itor++;

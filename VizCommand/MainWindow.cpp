@@ -67,17 +67,34 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	m_pWindowListControl->Insert(_T("0"), 0, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで0番目にウィンドウを挿入.
 	m_pWindowListControl->Insert(_T("1"), 1, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで1番目にウィンドウを挿入.
 	m_pWindowListControl->Insert(_T("2"), 2, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで2番目にウィンドウを挿入.
-	m_pWindowListControl->Insert(_T("3"), 3, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで3番目にウィンドウを挿入.
-	m_pWindowListControl->Insert(_T("4"), 4, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで4番目にウィンドウを挿入.
-	m_pWindowListControl->Insert(_T("5"), 5, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで5番目にウィンドウを挿入.
-	m_pWindowListControl->Insert(_T("6"), 6, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで6番目にウィンドウを挿入.
+	//m_pWindowListControl->Insert(_T("3"), 3, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで3番目にウィンドウを挿入.
+	//m_pWindowListControl->Insert(_T("4"), 4, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで4番目にウィンドウを挿入.
+	//m_pWindowListControl->Insert(_T("5"), 5, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで5番目にウィンドウを挿入.
+	//m_pWindowListControl->Insert(_T("6"), 6, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで6番目にウィンドウを挿入.
+
+#if 1
+	// 子ウィンドウを挿入.
+	CWindowListItem * pItem1 = m_pWindowListControl->Get(0);	// m_pWindowListControl->Getで0番目を取得.
+	CEditBoxPanel *pEditBoxPanel1 = new CEditBoxPanel();	// エディットボックスパネルの生成.
+	pEditBoxPanel1->Create(_T(""), 0, PADDING + 50, PADDING, pItem1->m_iWidth - (PADDING * 2), pItem1->m_iHeight - (PADDING * 2), pItem1->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
+	pItem1->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel1));	// pItem->m_mapChildMap.insertでマップ登録.
 
 	// 子ウィンドウを挿入.
-	CWindowListItem * pItem = m_pWindowListControl->Get(0);	// m_pWindowListControl->Getで0番目を取得.
-	CEditBoxPanel *pEditBoxPanel = new CEditBoxPanel();	// エディットボックスパネルの生成.
-	pEditBoxPanel->Create(_T(""), 0, PADDING, PADDING, pItem->m_iWidth - (PADDING * 2), pItem->m_iHeight - (PADDING * 2), pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
-	pItem->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel));	// pItem->m_mapChildMap.insertでマップ登録.
+	CWindowListItem * pItem2 = m_pWindowListControl->Get(1);	// m_pWindowListControl->Getで1番目を取得.
+	CEditBoxPanel *pEditBoxPanel2 = new CEditBoxPanel();	// エディットボックスパネルの生成.
+	pEditBoxPanel2->Create(_T(""), 0, PADDING + 50, PADDING, pItem2->m_iWidth - (PADDING * 2), pItem2->m_iHeight - (PADDING * 2), pItem2->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 1, lpCreateStruct->hInstance);	// Createで生成.
+	pItem2->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel2));	// pItem->m_mapChildMap.insertでマップ登録.
 
+	// 子ウィンドウを挿入.
+	CWindowListItem * pItem3 = m_pWindowListControl->Get(2);	// m_pWindowListControl->Getで2番目を取得.
+	CEditBoxPanel *pEditBoxPanel3 = new CEditBoxPanel();	// エディットボックスパネルの生成.
+	pEditBoxPanel3->Create(_T(""), 0, PADDING + 50, PADDING, pItem3->m_iWidth - (PADDING * 2), pItem3->m_iHeight - (PADDING * 2), pItem3->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 2, lpCreateStruct->hInstance);	// Createで生成.
+	pItem3->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel3));	// pItem->m_mapChildMap.insertでマップ登録.
+#endif
+	// 削除
+	m_pWindowListControl->Remove(1);
+	//m_pWindowListControl->Remove(1);
+	//m_pWindowListControl->Remove(0);
 #else
 
 	// ウィンドウリストコントロールの作成.
