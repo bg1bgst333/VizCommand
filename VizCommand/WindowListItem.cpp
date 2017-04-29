@@ -74,7 +74,7 @@ void CWindowListItem::OnSize(UINT nType, int cx, int cy) {
 	// アイテムの一斉リサイズ.
 	std::map<tstring, CWindow *>::iterator itor = m_mapChildMap.begin();	// イテレータ.
 	while (itor != m_mapChildMap.end()) {
-		itor->second->MoveWindow(2, m_iWidth - (3 * 2));	// 親ウィンドウの幅に合わせる.
+		itor->second->MoveWindow(2, m_iWidth - (PADDING * 2));	// 親ウィンドウの幅に合わせる.
 		itor++;
 	}
 

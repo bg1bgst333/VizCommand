@@ -75,7 +75,7 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// 子ウィンドウを挿入.
 	CWindowListItem * pItem = m_pWindowListControl->Get(0);	// m_pWindowListControl->Getで0番目を取得.
 	CEditBoxPanel *pEditBoxPanel = new CEditBoxPanel();	// エディットボックスパネルの生成.
-	pEditBoxPanel->Create(_T(""), 0, 3, 3, pItem->m_iWidth - (3 * 2), pItem->m_iHeight - (3 * 2), pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
+	pEditBoxPanel->Create(_T(""), 0, PADDING, PADDING, pItem->m_iWidth - (PADDING * 2), pItem->m_iHeight - (PADDING * 2), pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
 	pItem->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel));	// pItem->m_mapChildMap.insertでマップ登録.
 
 #else
@@ -109,6 +109,6 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 
 	// 引数のクライアント領域のサイズを使って子ウィンドウをリサイズ.
 	//m_pWindowListControl->MoveWindow(1, 1, cx - (1 * 2), cy - (1 * 2));	// 1周り小さいとなると, 1pxなら2倍の2pxサイズが小さくならなければならない.
-	m_pWindowListControl->MoveWindow(3, 3, cx - (3 * 2), cy - (3 * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	m_pWindowListControl->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
 
 }

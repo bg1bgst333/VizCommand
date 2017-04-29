@@ -6,6 +6,8 @@
 #include <windows.h>	// 標準WindowsAPI
 #include <tchar.h>		// TCHAR型
 #include <map>			// std::map
+// 独自のヘッダ
+#include "resource.h"	// リソース
 
 // マクロの定義
 // UNICODE切り替え

@@ -116,9 +116,9 @@ void CWindowListControl::OnSize(UINT nType, int cx, int cy) {
 	// 引数のクライアント領域のサイズを使って子ウィンドウをリサイズ.
 	//m_pWindowListItemsPanel->MoveWindow(3, 3, cx - (3 * 2), cy - (3 * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
 	//m_pWindowListItemsPanel->MoveWindow(3, 3, cx - (3 * 2), 10);	// 3pxなら2倍の6pxサイズが小さくならなければならない.(縦だけ小さく.)
-	m_pWindowListItemsPanel->MoveWindow(0, 3);
-	m_pWindowListItemsPanel->MoveWindow(1, 3);
-	m_pWindowListItemsPanel->MoveWindow(2, cx - (3 * 2));
+	m_pWindowListItemsPanel->MoveWindow(0, PADDING);
+	m_pWindowListItemsPanel->MoveWindow(1, PADDING);
+	m_pWindowListItemsPanel->MoveWindow(2, cx - (PADDING * 2));
 
 	// スクロールバー設定.
 	// 横
@@ -128,7 +128,7 @@ void CWindowListControl::OnSize(UINT nType, int cx, int cy) {
 	m_ScrollInfo.nPage = cx;	// クライアント領域の幅をセット.
 	m_ScrollInfo.nMin = 0;	// 最小値をセット.
 	if (m_pWindowListItemsPanel != NULL) {
-		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iWidth + (3 * 2);	// 子ウィンドウの幅をセット.
+		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iWidth + (PADDING * 2);	// 子ウィンドウの幅をセット.
 	}
 	//SetScrollInfo(m_hWnd, SB_HORZ, &m_ScrollInfo, TRUE);	// SetScrollInfoでセット.
 
@@ -139,7 +139,7 @@ void CWindowListControl::OnSize(UINT nType, int cx, int cy) {
 	m_ScrollInfo.nPage = cy;	// クライアント領域の高さをセット.
 	m_ScrollInfo.nMin = 0;	// 最小値をセット.
 	if (m_pWindowListItemsPanel != NULL) {
-		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iHeight + (3 * 2);	// 子ウィンドウの高さをセット.
+		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iHeight + (PADDING * 2);	// 子ウィンドウの高さをセット.
 	}
 	SetScrollInfo(m_hWnd, SB_VERT, &m_ScrollInfo, TRUE);	// SetScrollInfoでセット.
 
@@ -164,7 +164,7 @@ void CWindowListControl::OnPaint() {
 	m_ScrollInfo.nPage = rc.right - rc.left;	// クライアント領域の幅をセット.
 	m_ScrollInfo.nMin = 0;	// 最小値をセット.
 	if (m_pWindowListItemsPanel != NULL) {
-		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iWidth + (3 * 2);	// 子ウィンドウの幅をセット.
+		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iWidth + (PADDING * 2);	// 子ウィンドウの幅をセット.
 	}
 	//SetScrollInfo(m_hWnd, SB_HORZ, &m_ScrollInfo, TRUE);	// SetScrollInfoでセット.
 
@@ -175,7 +175,7 @@ void CWindowListControl::OnPaint() {
 	m_ScrollInfo.nPage = rc.bottom - rc.top;	// クライアント領域の高さをセット.
 	m_ScrollInfo.nMin = 0;	// 最小値をセット.
 	if (m_pWindowListItemsPanel != NULL) {
-		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iHeight + (3 * 2);	// 子ウィンドウの高さをセット.
+		m_ScrollInfo.nMax = m_pWindowListItemsPanel->m_iHeight + (PADDING * 2);	// 子ウィンドウの高さをセット.
 	}
 	SetScrollInfo(m_hWnd, SB_VERT, &m_ScrollInfo, TRUE);	// SetScrollInfoでセット.
 
@@ -277,7 +277,7 @@ void CWindowListControl::OnHScroll(UINT nSBCode, UINT nPos) {
 	SetScrollInfo(m_hWnd, SB_HORZ, &m_ScrollInfo, TRUE);
 
 	// アイテムズパネルの移動.
-	m_pWindowListItemsPanel->MoveWindow(0, -m_ScrollInfo.nPos + 3);	// m_pWindowListItemsPanel->MoveWindowでx軸だけ変更.
+	m_pWindowListItemsPanel->MoveWindow(0, -m_ScrollInfo.nPos + PADDING);	// m_pWindowListItemsPanel->MoveWindowでx軸だけ変更.
 
 }
 
@@ -319,7 +319,7 @@ void CWindowListControl::OnVScroll(UINT nSBCode, UINT nPos) {
 
 			// nPosが最大値-1でなければインクリメント.
 			if (m_ScrollInfo.nPos < m_ScrollInfo.nMax - 1) {
-					m_ScrollInfo.nPos++;
+				m_ScrollInfo.nPos++;
 			}
 			break;
 
@@ -362,6 +362,6 @@ void CWindowListControl::OnVScroll(UINT nSBCode, UINT nPos) {
 	SetScrollInfo(m_hWnd, SB_VERT, &m_ScrollInfo, TRUE);
 
 	// アイテムズパネルの移動.
-	m_pWindowListItemsPanel->MoveWindow(1, -m_ScrollInfo.nPos + 3);	// m_pWindowListItemsPanel->MoveWindowでy軸だけ変更.
+	m_pWindowListItemsPanel->MoveWindow(1, -m_ScrollInfo.nPos + PADDING);	// m_pWindowListItemsPanel->MoveWindowでy軸だけ変更.
 
 }

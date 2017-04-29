@@ -88,7 +88,7 @@ BOOL CWindowListItemsPanel::Insert(LPCTSTR lpctszWindowName, int iIndex, int iHe
 	for (int i = 0; i < (int)m_lstWindowList.size() + 1; i++) {
 		if (i == iIdx) {
 			pItem = new CWindowListItem();	// 生成.
-			pItem->Create(lpctszWindowName, 0, 3, iTotalHeight + 3, m_iWidth - (3 * 2), iHeight - (3 * 2), m_hWnd, (HMENU)(IDC_WINDOWLISTITEM_ID_START + m_nId), hInstance);	// ウィンドウ生成.
+			pItem->Create(lpctszWindowName, 0, PADDING, iTotalHeight + PADDING, m_iWidth - (PADDING * 2), iHeight - (PADDING * 2), m_hWnd, (HMENU)(IDC_WINDOWLISTITEM_ID_START + m_nId), hInstance);	// ウィンドウ生成.
 			iTotalHeight = iTotalHeight + iHeight;	// 挿入するウィンドウの高さを足す.
 			m_lstWindowList.insert(itor, pItem);	// 挿入.
 			m_nId++;
@@ -99,13 +99,13 @@ BOOL CWindowListItemsPanel::Insert(LPCTSTR lpctszWindowName, int iIndex, int iHe
 		}
 		else if (i < iIdx) {
 			y = y + (*itor)->m_iHeight;	// 位置計算.
-			y = y + (3 * 2);	// 余白の大きさ
+			y = y + (PADDING * 2);	// 余白の大きさ
 			iTotalHeight = y;
 		}
 		else if (i > iIdx) {
 			if (itor != m_lstWindowList.end()) {
 				iTotalHeight = iTotalHeight + (*itor)->m_iHeight;
-				iTotalHeight = iTotalHeight + (3 * 2);
+				iTotalHeight = iTotalHeight + (PADDING * 2);
 				(*itor)->MoveWindow(false, 0, iHeight);	// iHeight分ずらす.
 			}
 			else {
@@ -232,7 +232,7 @@ void CWindowListItemsPanel::OnSize(UINT nType, int cx, int cy) {
 	// アイテムの一斉リサイズ.
 	std::list<CWindowListItem *>::iterator itor = m_lstWindowList.begin();	// イテレータ.
 	while (itor != m_lstWindowList.end()) {
-		(*itor)->MoveWindow(2, m_iWidth - (3 * 2));	// 親ウィンドウの幅に合わせる.
+		(*itor)->MoveWindow(2, m_iWidth - (PADDING * 2));	// 親ウィンドウの幅に合わせる.
 		itor++;
 	}
 
