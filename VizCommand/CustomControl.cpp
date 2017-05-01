@@ -255,6 +255,14 @@ LRESULT CCustomControl::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, L
 		// それ以外の時.
 		default:
 
+			// defaultブロック
+			{
+
+				// OnUserMessageに任せる.
+				OnUserMessage(uMsg, wParam, lParam);	// OnUserMessageに任せる.
+
+			}
+
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 

@@ -22,3 +22,6 @@
 
 // マクロの定義
 #define PADDING 3
+
+// 独自のウィンドウメッセージの定義
+#define UM_SIZECHILD	(WM_APP + 1000)	// 32768 + 1000( = 33768)

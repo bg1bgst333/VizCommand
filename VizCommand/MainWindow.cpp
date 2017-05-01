@@ -27,7 +27,8 @@ CMainWindow::CMainWindow() : CBasicWindow() {
 
 	// メンバの初期化
 	m_pWindowListControl = NULL;	// m_pWindowListControlをNULLで初期化.
-	m_pScalableEditBox = NULL;	// m_pScalableEditBoxをNULLにセット.
+	//m_pScalableEditBox = NULL;	// m_pScalableEditBoxをNULLにセット.
+	m_pScalableEditBoxPanel = NULL;	// m_pScalableEditBoxPanelをNULLにセット.
 
 }
 
@@ -51,11 +52,18 @@ BOOL CMainWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, 
 void CMainWindow::Destroy() {
 
 	// 子ウィンドウの破棄.
-	if (m_pScalableEditBox != NULL) {
-		m_pScalableEditBox->Destroy();
-		delete m_pScalableEditBox;
-		m_pScalableEditBox = NULL;
+	if (m_pScalableEditBoxPanel != NULL) {
+		m_pScalableEditBoxPanel->Destroy();
+		delete m_pScalableEditBoxPanel;
+		m_pScalableEditBoxPanel = NULL;
 	}
+	/*
+	if (m_pScalableEditBox != NULL) {
+	m_pScalableEditBox->Destroy();
+	delete m_pScalableEditBox;
+	m_pScalableEditBox = NULL;
+	}
+	*/
 	if (m_pWindowListControl != NULL) {
 		m_pWindowListControl->Destroy();	// m_pWindowListControlのウィンドウを破棄.
 		delete m_pWindowListControl;		// m_pWindowListControlを解放.
@@ -72,8 +80,11 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 #if 1
 
-	m_pScalableEditBox = new CScalableEditBox();
-	m_pScalableEditBox->Create(_T(""), ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
+	//m_pScalableEditBox = new CScalableEditBox();
+	//m_pScalableEditBox->Create(_T(""), ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
+
+	m_pScalableEditBoxPanel = new CScalableEditBoxPanel();
+	m_pScalableEditBoxPanel->Create(_T(""), 0, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
 
 #else
 
@@ -112,7 +123,6 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	pEditBoxPanel3->Create(_T(""), 0, PADDING + 50, PADDING, pItem3->m_iWidth - (PADDING * 2), pItem3->m_iHeight - (PADDING * 2), pItem3->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 2, lpCreateStruct->hInstance);	// Createで生成.
 	pItem3->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel3));	// pItem->m_mapChildMap.insertでマップ登録.
 #endif
-																						
 	// 削除
 	m_pWindowListControl->Remove(1);
 	//m_pWindowListControl->Remove(1);

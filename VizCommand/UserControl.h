@@ -13,6 +13,7 @@ class CUserControl : public CWindow {
 		// publicメンバ関数
 		// staticメンバ関数
 		static BOOL RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName);	// ウィンドウクラス登録関数RegisterClass(ウィンドウクラス名指定)
+		static BOOL RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, HBRUSH hBrush);	// ウィンドウクラス登録関数RegisterClass(背景ブラシ指定)
 
 		// コンストラクタ・デストラクタ
 		CUserControl();	// コンストラクタCUserControl()

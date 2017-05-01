@@ -44,6 +44,11 @@ int CScalableEditBox::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// ウィンドウのリサイズ
 	MoveWindow(3, m_iLineHeight);	// MoveWindowで高さを1行分のm_iLineHeightにする.
 
+	// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+	WPARAM wParam;
+	wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+	SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
+
 	// 行数のセット.
 	m_iLineCount = 1;	// 1行分はできたのでm_iLineCountに1をセット.
 
@@ -66,6 +71,11 @@ void CScalableEditBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		MoveWindow(3, iHeight);	// MoveWindowで高さを新しいiHeightにする.
 		m_iLineCount++;		// 行数を増やす.
 
+		// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+		WPARAM wParam;
+		wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+		SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
+
 	}
 	else if (nChar == VK_BACK) {	// VK_BACKの時.
 
@@ -87,12 +97,34 @@ void CScalableEditBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		wCol = wAllLen - wRowStart;	// 総文字数からキャレット行の先頭までの文字数を引いて, ようやく何列目かがわかる.
 		if (wCol == 0) {	// 列が先頭の場合.
 			if (wRow > 0) {	// 行が先頭でない場合.
+
+				// 1行分小さくする.
 				iHeight = m_iHeight - m_iLineHeight;	// 新しい高さiHeightはm_iHeightからm_iLineHeightを引いたものにする.
 				MoveWindow(3, iHeight);	// MoveWindowで高さを新しいiHeightにする.
 				m_iLineCount--;	// m_iLineCountを減らす.
+
+				// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+				WPARAM wParam;
+				wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+				SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
+
 			}
 		}
 
 	}
+
+}
+
+// ウィンドウサイズが変更された時のハンドラOnSize.
+void CScalableEditBox::OnSize(UINT nType, int cx, int cy) {
+
+	// 実際のウィンドウサイズを格納.
+	m_iWidth = cx;	// m_iWidthにcxをセット.
+	m_iHeight = cy;	// m_iHeightにcyをセット.
+
+	// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+	//WPARAM wParam;
+	//wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+	//SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
 
 }

@@ -2,11 +2,12 @@
 #pragma once	// #pragma onceで二重インクルード防止.
 
 // 独自のヘッダ
-#include "BasicWindow.h"		// ベーシックウィンドウクラス
-#include "WindowListControl.h"	// ウィンドウリストコントロールクラス
-#include "EditBoxPanel.h"		// エディットボックスパネルクラス
-#include "ScalableEditBox.h"	// スカラブルエディットボックスクラス
-#include "resource.h"			// リソース
+#include "BasicWindow.h"			// ベーシックウィンドウクラス
+#include "WindowListControl.h"		// ウィンドウリストコントロールクラス
+//#include "EditBoxPanel.h"			// エディットボックスパネルクラス
+//#include "ScalableEditBox.h"		// スカラブルエディットボックスクラス
+#include "ScalableEditBoxPanel.h"	// スカラブルエディットボックスパネルクラス
+#include "resource.h"				// リソース
 
 // メインウィンドウクラスCMainWindow
 class CMainWindow : public CBasicWindow {
@@ -15,8 +16,9 @@ class CMainWindow : public CBasicWindow {
 	public:
 
 		// publicメンバ変数
-		CWindowListControl *m_pWindowListControl;	// CWindowListControl *型ウィンドウリストコントロールオブジェクトポインタm_pWindowListControl
-		CScalableEditBox *m_pScalableEditBox;	// CScalableEditBox *型スカラブルエディットボックスオブジェクトポインタm_pScalableEditBox
+		CWindowListControl *m_pWindowListControl;		// CWindowListControl *型ウィンドウリストコントロールオブジェクトポインタm_pWindowListControl
+		//CScalableEditBox *m_pScalableEditBox;			// CScalableEditBox *型スカラブルエディットボックスオブジェクトポインタm_pScalableEditBox
+		CScalableEditBoxPanel *m_pScalableEditBoxPanel;	// CScalableEditBoxPanel *型スカラブルエディットボックスパネルオブジェクトポインタm_pScalableEditBoxPanel
 
 		// publicメンバ関数
 		// staticメンバ関数

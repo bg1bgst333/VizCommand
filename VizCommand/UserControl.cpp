@@ -13,6 +13,14 @@ BOOL CUserControl::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName) {
 
 }
 
+// ウィンドウクラス登録関数RegisterClass(背景ブラシ指定)
+BOOL CUserControl::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, HBRUSH hBrush) {
+
+	// ウィンドウクラスの登録
+	return CWindow::RegisterClass(hInstance, lpctszClassName, hBrush);	// CWindow::RegisterClass(背景ブラシ指定)でウィンドウクラスlpctszClassNameを登録.
+
+}
+
 // コンストラクタCUserControl()
 CUserControl::CUserControl() : CWindow() {
 

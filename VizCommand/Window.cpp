@@ -444,6 +444,14 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 		// それ以外の時.
 		default:
 
+			// defaultブロック
+			{
+
+				// OnUserMessageに任せる.
+				OnUserMessage(uMsg, wParam, lParam);	// OnUserMessageに任せる.
+
+			}
+
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
@@ -513,5 +521,10 @@ int CWindow::OnClose() {
 
 // キーが押された時のハンドラOnKeyDown.
 void CWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+
+}
+
+// ユーザ定義メッセージが発生した時のハンドラ.
+void CWindow::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 }
