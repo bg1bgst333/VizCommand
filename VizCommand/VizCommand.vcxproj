@@ -155,6 +155,7 @@
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PictureBox.cpp" />
+    <ClCompile Include="ScalableEditBox.cpp" />
     <ClCompile Include="StandardApplication.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="PictureBox.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ScalableEditBox.h" />
     <ClInclude Include="StandardApplication.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="Window.h" />

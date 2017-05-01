@@ -238,6 +238,20 @@ LRESULT CCustomControl::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, L
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// キーが押された時.
+		case WM_KEYDOWN:
+
+			// WM_KEYDOWNブロック
+			{
+
+				// OnKeyDownに任せる.
+				OnKeyDown(wParam, LOWORD(lParam), HIWORD(lParam));	// OnKeyDownに任せる.
+
+			}
+				
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// それ以外の時.
 		default:
 

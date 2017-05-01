@@ -14,11 +14,20 @@ BOOL CMainWindow::RegisterClass(HINSTANCE hInstance) {
 
 }
 
+// ウィンドウクラス登録関数RegisterClass(背景ブラシ指定)
+BOOL CMainWindow::RegisterClass(HINSTANCE hInstance, HBRUSH hBrush) {
+
+	// ウィンドウクラスの登録
+	return CWindow::RegisterClass(hInstance, _T("MainWindow"), hBrush);	// CWindow::RegisterClass(背景ブラシ指定)でウィンドウクラス"MainWindow"を登録.
+
+}
+
 // コンストラクタCMainWindow()
 CMainWindow::CMainWindow() : CBasicWindow() {
 
 	// メンバの初期化
 	m_pWindowListControl = NULL;	// m_pWindowListControlをNULLで初期化.
+	m_pScalableEditBox = NULL;	// m_pScalableEditBoxをNULLにセット.
 
 }
 
@@ -42,6 +51,11 @@ BOOL CMainWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, 
 void CMainWindow::Destroy() {
 
 	// 子ウィンドウの破棄.
+	if (m_pScalableEditBox != NULL) {
+		m_pScalableEditBox->Destroy();
+		delete m_pScalableEditBox;
+		m_pScalableEditBox = NULL;
+	}
 	if (m_pWindowListControl != NULL) {
 		m_pWindowListControl->Destroy();	// m_pWindowListControlのウィンドウを破棄.
 		delete m_pWindowListControl;		// m_pWindowListControlを解放.
@@ -55,6 +69,13 @@ void CMainWindow::Destroy() {
 
 // ウィンドウ作成時のハンドラOnCreate.
 int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
+
+#if 1
+
+	m_pScalableEditBox = new CScalableEditBox();
+	m_pScalableEditBox->Create(_T(""), ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
+
+#else
 
 #if 1
 
@@ -91,6 +112,7 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	pEditBoxPanel3->Create(_T(""), 0, PADDING + 50, PADDING, pItem3->m_iWidth - (PADDING * 2), pItem3->m_iHeight - (PADDING * 2), pItem3->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 2, lpCreateStruct->hInstance);	// Createで生成.
 	pItem3->m_mapChildMap.insert(std::make_pair(_T("EditBoxPanel"), pEditBoxPanel3));	// pItem->m_mapChildMap.insertでマップ登録.
 #endif
+																						
 	// 削除
 	m_pWindowListControl->Remove(1);
 	//m_pWindowListControl->Remove(1);
@@ -110,6 +132,8 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 #endif
 
+#endif
+
 	// 成功.
 	return 0;	// 成功なので0を返す.
 
@@ -126,6 +150,8 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 
 	// 引数のクライアント領域のサイズを使って子ウィンドウをリサイズ.
 	//m_pWindowListControl->MoveWindow(1, 1, cx - (1 * 2), cy - (1 * 2));	// 1周り小さいとなると, 1pxなら2倍の2pxサイズが小さくならなければならない.
-	m_pWindowListControl->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	if (m_pWindowListControl != NULL) {
+		m_pWindowListControl->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	}
 
 }

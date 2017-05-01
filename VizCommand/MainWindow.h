@@ -5,6 +5,7 @@
 #include "BasicWindow.h"		// ベーシックウィンドウクラス
 #include "WindowListControl.h"	// ウィンドウリストコントロールクラス
 #include "EditBoxPanel.h"		// エディットボックスパネルクラス
+#include "ScalableEditBox.h"	// スカラブルエディットボックスクラス
 #include "resource.h"			// リソース
 
 // メインウィンドウクラスCMainWindow
@@ -15,10 +16,12 @@ class CMainWindow : public CBasicWindow {
 
 		// publicメンバ変数
 		CWindowListControl *m_pWindowListControl;	// CWindowListControl *型ウィンドウリストコントロールオブジェクトポインタm_pWindowListControl
+		CScalableEditBox *m_pScalableEditBox;	// CScalableEditBox *型スカラブルエディットボックスオブジェクトポインタm_pScalableEditBox
 
 		// publicメンバ関数
 		// staticメンバ関数
 		static BOOL RegisterClass(HINSTANCE hInstance);	// ウィンドウクラス登録関数RegisterClass.
+		static BOOL RegisterClass(HINSTANCE hInstance, HBRUSH hBrush);	// ウィンドウクラス登録関数RegisterClass(背景ブラシ指定)
 
 		// コンストラクタ・デストラクタ
 		CMainWindow();			// コンストラクタCMainWindow()

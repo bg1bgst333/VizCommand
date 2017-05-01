@@ -94,6 +94,37 @@ BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, UINT n
 
 }
 
+// ウィンドウクラス登録関数RegisterClass(背景ブラシ指定)
+BOOL CWindow::RegisterClass(HINSTANCE hInstance, LPCTSTR lpctszClassName, HBRUSH hBrush) {
+
+	// 変数の宣言
+	WNDCLASS wc;	// ウィンドウクラスwc
+
+	// ウィンドウクラスの設定
+	wc.lpszClassName = lpctszClassName;						// ウィンドウクラス名はlpctszClassName.
+	wc.style = CS_HREDRAW | CS_VREDRAW;						// スタイルはとりあえずCS_HREDRAW | CS_VREDRAW.
+	wc.lpfnWndProc = StaticWindowProc;						// ウィンドウプロシージャにStaticWindowProc.
+	wc.hInstance = hInstance;								// インスタンスハンドルは引数のhInstanceをセット.
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);				// アプリケーション既定アイコンIDI_APPLICATION.
+	wc.hCursor = LoadCursor(hInstance, IDC_ARROW);			// システム既定の矢印カーソルIDC_ARROW.
+	wc.hbrBackground = hBrush;								// 背景は引数のhBrushを指定.
+	wc.lpszMenuName = NULL;									// とりあえず現時点ではNULL.
+	wc.cbClsExtra = 0;										// とりあえず0でいい.
+	wc.cbWndExtra = 0;										// とりあえず0でいい.
+
+	// ウィンドウクラスの登録
+	if (!::RegisterClass(&wc)) {	// RegisterClassにwcをセットして登録.
+
+		// エラー処理
+		return FALSE;	// 失敗なのでFALSEを返す.
+
+	}
+
+	// 成功ならTRUE.
+	return TRUE;	// 成功なのでTRUEを返す.
+
+}
+
 // 独自のウィンドウプロシージャStaticWindowProc関数
 LRESULT CWindow::StaticWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -396,6 +427,20 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// キーが押された時.
+		case WM_KEYDOWN:
+
+			// WM_KEYDOWNブロック
+			{
+
+				// OnKeyDownに任せる.
+				OnKeyDown(wParam, LOWORD(lParam), HIWORD(lParam));	// OnKeyDownに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// それ以外の時.
 		default:
 
@@ -463,5 +508,10 @@ int CWindow::OnClose() {
 
 	// 0を返す.
 	return 0;	// 0を返してウィンドウを閉じる.
+
+}
+
+// キーが押された時のハンドラOnKeyDown.
+void CWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 }

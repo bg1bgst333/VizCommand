@@ -18,7 +18,7 @@ BOOL CMainApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int n
 	CStandardApplication::InitInstance(hInstance, lpCmdLine, nShowCmd);	// CStandardApplication::InitInstanceを呼ぶ.
 
 	// メインウィンドウクラスの登録
-	CMainWindow::RegisterClass(hInstance);	// CMainWindow::RegisterClassでメニューIDがIDR_MAINMENUなウィンドウクラス"MainWindow"を登録.
+	CMainWindow::RegisterClass(hInstance, (HBRUSH)GetStockObject(LTGRAY_BRUSH));	// CMainWindow::RegisterClassで背景ブラシがLTGRAY_BRUSHなウィンドウクラス"MainWindow"を登録.
 
 	// ウィンドウリストコントロールクラスの登録
 	CWindowListControl::RegisterClass(hInstance);	// CWindowListControl::RegisterClassでウィンドウリストコントロールクラスの登録.
