@@ -78,13 +78,41 @@ void CMainWindow::Destroy() {
 // ウィンドウ作成時のハンドラOnCreate.
 int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
+	// ウィンドウリストコントロールの作成.
+	m_pWindowListControl = new CWindowListControl();	// CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
+	m_pWindowListControl->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.
+	// アイテムを挿入.
+	m_pWindowListControl->Insert(_T("0"), 0, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで0番目にウィンドウを挿入.
+	m_pWindowListControl->Insert(_T("1"), 1, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで1番目にウィンドウを挿入.
+	m_pWindowListControl->Insert(_T("2"), 2, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで2番目にウィンドウを挿入
+	m_pWindowListControl->Insert(_T("3"), 3, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで3番目にウィンドウを挿入.
+	m_pWindowListControl->Insert(_T("4"), 4, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで4番目にウィンドウを挿入
+
+	// 子ウィンドウを挿入.
+	CWindowListItem * pItem1 = m_pWindowListControl->Get(0);	// m_pWindowListControl->Getで0番目を取得.
+	CScalableEditBoxPanel *pScalableEditBoxPanel1 = new CScalableEditBoxPanel();	// スカラブルエディットボックスパネルの生成.
+	pScalableEditBoxPanel1->Create(_T(""), 0, 0, 0, pItem1->m_iWidth, pItem1->m_iHeight, pItem1->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// Createで生成.
+	pItem1->m_mapChildMap.insert(std::make_pair(_T("ScalableEditBoxPanel"), pScalableEditBoxPanel1));	// pItem->m_mapChildMap.insertでマップ登録.
+
+	// 子ウィンドウを挿入.
+	CWindowListItem * pItem2 = m_pWindowListControl->Get(1);	// m_pWindowListControl->Getで1番目を取得.
+	CScalableEditBoxPanel *pScalableEditBoxPanel2 = new CScalableEditBoxPanel();	// スカラブルエディットボックスパネルの生成.
+	pScalableEditBoxPanel2->Create(_T(""), 0, 0, 0, pItem2->m_iWidth, pItem2->m_iHeight, pItem2->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 1, lpCreateStruct->hInstance);	// Createで生成.
+	pItem2->m_mapChildMap.insert(std::make_pair(_T("ScalableEditBoxPanel"), pScalableEditBoxPanel2));	// pItem->m_mapChildMap.insertでマップ登録.
+
+	// 子ウィンドウを挿入.
+	CWindowListItem * pItem3 = m_pWindowListControl->Get(3);	// m_pWindowListControl->Getで3番目を取得.
+	CScalableEditBoxPanel *pScalableEditBoxPanel3 = new CScalableEditBoxPanel();	// スカラブルエディットボックスパネルの生成.
+	pScalableEditBoxPanel3->Create(_T(""), 0, 0, 0, pItem3->m_iWidth, pItem3->m_iHeight, pItem3->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + 2, lpCreateStruct->hInstance);	// Createで生成.
+	pItem3->m_mapChildMap.insert(std::make_pair(_T("ScalableEditBoxPanel"), pScalableEditBoxPanel3));	// pItem->m_mapChildMap.insertでマップ登録.
+
 #if 1
 
 	//m_pScalableEditBox = new CScalableEditBox();
 	//m_pScalableEditBox->Create(_T(""), ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
 
-	m_pScalableEditBoxPanel = new CScalableEditBoxPanel();
-	m_pScalableEditBoxPanel->Create(_T(""), 0, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
+	//m_pScalableEditBoxPanel = new CScalableEditBoxPanel();
+	//m_pScalableEditBoxPanel->Create(_T(""), 0, 50, 50, 300, 200, hwnd, (HMENU)IDC_SCALABLEEDIT1, lpCreateStruct->hInstance);
 
 #else
 

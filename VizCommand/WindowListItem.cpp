@@ -74,7 +74,7 @@ void CWindowListItem::OnSize(UINT nType, int cx, int cy) {
 	// アイテムの一斉リサイズ.
 	std::map<tstring, CWindow *>::iterator itor = m_mapChildMap.begin();	// イテレータ.
 	while (itor != m_mapChildMap.end()) {
-		itor->second->MoveWindow(2, m_iWidth - (PADDING * 2));	// 親ウィンドウの幅に合わせる.
+		itor->second->MoveWindow(2, m_iWidth);	// 親ウィンドウの幅に合わせる.
 		itor++;
 	}
 
@@ -105,5 +105,58 @@ void CWindowListItem::OnPaint() {
 	SelectObject(hDC, hOldPen);		// 古いペンを選択.
 	// 描画終了.
 	EndPaint(m_hWnd, &ps);	// EndPaintで描画終了.
+
+}
+
+// ユーザ定義メッセージが発生した時のハンドラ.
+void CWindowListItem::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	// switch-case文で振り分ける.
+	switch (uMsg) {
+
+		// 子から親へウィンドウサイズ変更の要求が発生した時.
+		case UM_SIZECHILD:
+
+			// UM_SIZECHILDブロック
+			{
+
+				// OnSizeChildに任せる.
+				OnSizeChild(wParam, lParam);	// OnSizeChildに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// それ以外.
+		default:
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+	}
+
+}
+
+// 子から親へウィンドウサイズ変更の要求が発生した時の独自ハンドラ.
+void CWindowListItem::OnSizeChild(WPARAM wParam, LPARAM lParam) {
+
+	// 変数の宣言.
+	int iWidth;
+	int iHeight;
+
+	// 子ウィンドウのサイズを取得.
+	iWidth = LOWORD(wParam);
+	iHeight = HIWORD(wParam);
+
+	// ウィンドウサイズの変更.
+	HWND hWnd = (HWND)lParam;	// lParamは子ウィンドウのハンドル.
+	HWND hParent = GetParent(hWnd);	// hParentがこのウィンドウ.(OnCreateの後なのでメンバに入ってない.)
+	::MoveWindow(hParent, m_x, m_y, iWidth, iHeight, TRUE);	// 子ウィンドウと同じする.
+
+	// UM_SIZECHILDで親ウィンドウのリストを調整してもらう.
+	WPARAM wp;
+	wp = MAKEWPARAM(m_iWidth, m_iHeight);
+	SendMessage(GetParent(hParent), UM_SIZECHILD, wp, (LPARAM)hParent);
 
 }

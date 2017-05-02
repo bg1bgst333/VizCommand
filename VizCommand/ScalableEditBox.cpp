@@ -123,8 +123,8 @@ void CScalableEditBox::OnSize(UINT nType, int cx, int cy) {
 	m_iHeight = cy;	// m_iHeightにcyをセット.
 
 	// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
-	//WPARAM wParam;
-	//wParam = MAKEWPARAM(m_iWidth, m_iHeight);
-	//SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
+	WPARAM wParam;
+	wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+	SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
 
 }

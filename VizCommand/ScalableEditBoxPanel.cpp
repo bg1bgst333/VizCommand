@@ -56,11 +56,12 @@ void CScalableEditBoxPanel::OnSize(UINT nType, int cx, int cy) {
 	m_iWidth = cx;	// m_iWidthにcxをセット.
 	m_iHeight = cy;	// m_iHeightにcyをセット.
 
-#if 0
+#if 1
 
 	// 子ウィンドウのリサイズ
 	if (m_pEditBox != NULL) {
-		m_pEditBox->MoveWindow(PADDING, PADDING, m_iWidth - (PADDING * 2), m_iHeight - (PADDING * 2));
+		//m_pEditBox->MoveWindow(PADDING, PADDING, m_iWidth - (PADDING * 2), m_iHeight - (PADDING * 2));
+		m_pEditBox->MoveWindow(0, 0, m_iWidth, m_iHeight);
 	}
 
 #endif
@@ -112,5 +113,10 @@ void CScalableEditBoxPanel::OnSizeChild(WPARAM wParam, LPARAM lParam) {
 	HWND hWnd = (HWND)lParam;	// lParamは子ウィンドウのハンドル.
 	HWND hParent = GetParent(hWnd);	// hParentがこのウィンドウ.(OnCreateの後なのでメンバに入ってない.)
 	::MoveWindow(hParent, m_x, m_y, iWidth, iHeight, TRUE);	// 子ウィンドウと同じする.
+
+	// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+	WPARAM wp;
+	wp = MAKEWPARAM(m_iWidth, m_iHeight);
+	SendMessage(GetParent(hParent), UM_SIZECHILD, wp, (LPARAM)hParent);
 
 }
