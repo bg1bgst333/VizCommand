@@ -218,8 +218,11 @@ CWindowListItem * CWindowListItemsPanel::Get(int iIndex) {
 int CWindowListItemsPanel::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ペンとブラシの作成.
-	m_hPen = (HPEN)CreatePen(PS_SOLID, 1, RGB(0, 0, 0xff));		// 青(濃)のペンを作成.
-	m_hBrush = (HBRUSH)CreateSolidBrush(RGB(0x9d, 0xcc, 0xe0));		// 青(淡)のブラシを作成.
+	//m_hPen = (HPEN)CreatePen(PS_SOLID, 1, RGB(0, 0, 0xff));		// 青(濃)のペンを作成.
+	//m_hBrush = (HBRUSH)CreateSolidBrush(RGB(0x9d, 0xcc, 0xe0));		// 青(淡)のブラシを作成.
+	// ペンとブラシの作成.
+	m_hPen = (HPEN)CreatePen(PS_SOLID, 1, RGB(0, 0, 0));		// 黒のペンを作成.
+	m_hBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));		// 黒のブラシを作成.
 
 	// 成功なので0を返す.
 	return 0;

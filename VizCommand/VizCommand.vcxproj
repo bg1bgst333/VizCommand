@@ -149,6 +149,8 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicApplication.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="ConsoleCore.cpp" />
     <ClCompile Include="CustomControl.cpp" />
     <ClCompile Include="EditBox.cpp" />
     <ClCompile Include="EditBoxPanel.cpp" />
@@ -158,6 +160,7 @@
     <ClCompile Include="ScalableEditBox.cpp" />
     <ClCompile Include="ScalableEditBoxPanel.cpp" />
     <ClCompile Include="StandardApplication.cpp" />
+    <ClCompile Include="StreamConsole.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowListControl.cpp" />
@@ -169,6 +172,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BasicApplication.h" />
     <ClInclude Include="BasicWindow.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="ConsoleCore.h" />
     <ClInclude Include="CustomControl.h" />
     <ClInclude Include="EditBox.h" />
     <ClInclude Include="EditBoxPanel.h" />
@@ -179,6 +184,7 @@
     <ClInclude Include="ScalableEditBox.h" />
     <ClInclude Include="ScalableEditBoxPanel.h" />
     <ClInclude Include="StandardApplication.h" />
+    <ClInclude Include="StreamConsole.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowListControl.h" />

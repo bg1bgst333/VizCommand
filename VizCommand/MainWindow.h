@@ -6,7 +6,9 @@
 #include "WindowListControl.h"		// ウィンドウリストコントロールクラス
 //#include "EditBoxPanel.h"			// エディットボックスパネルクラス
 //#include "ScalableEditBox.h"		// スカラブルエディットボックスクラス
-#include "ScalableEditBoxPanel.h"	// スカラブルエディットボックスパネルクラス
+//#include "ScalableEditBoxPanel.h"	// スカラブルエディットボックスパネルクラス
+#include "Console.h"				// コンソールクラス
+#include "StreamConsole.h"			// ストリームコンソールクラス
 #include "resource.h"				// リソース
 
 // メインウィンドウクラスCMainWindow
@@ -16,9 +18,11 @@ class CMainWindow : public CBasicWindow {
 	public:
 
 		// publicメンバ変数
-		CWindowListControl *m_pWindowListControl;		// CWindowListControl *型ウィンドウリストコントロールオブジェクトポインタm_pWindowListControl
+		//CWindowListControl *m_pWindowListControl;		// CWindowListControl *型ウィンドウリストコントロールオブジェクトポインタm_pWindowListControl
 		//CScalableEditBox *m_pScalableEditBox;			// CScalableEditBox *型スカラブルエディットボックスオブジェクトポインタm_pScalableEditBox
-		CScalableEditBoxPanel *m_pScalableEditBoxPanel;	// CScalableEditBoxPanel *型スカラブルエディットボックスパネルオブジェクトポインタm_pScalableEditBoxPanel
+		//CScalableEditBoxPanel *m_pScalableEditBoxPanel;	// CScalableEditBoxPanel *型スカラブルエディットボックスパネルオブジェクトポインタm_pScalableEditBoxPanel
+		CStreamConsole *m_pStreamConsole;				// CStreamConsole *型ストリームコンソールオブジェクトポインタm_pStreamConsole
+		CConsole *m_pConsole;	// CConsole *型コンソールオブジェクトポインタm_pConsole
 
 		// publicメンバ関数
 		// staticメンバ関数

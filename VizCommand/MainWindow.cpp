@@ -26,9 +26,11 @@ BOOL CMainWindow::RegisterClass(HINSTANCE hInstance, HBRUSH hBrush) {
 CMainWindow::CMainWindow() : CBasicWindow() {
 
 	// メンバの初期化
-	m_pWindowListControl = NULL;	// m_pWindowListControlをNULLで初期化.
+	//m_pWindowListControl = NULL;	// m_pWindowListControlをNULLで初期化.
 	//m_pScalableEditBox = NULL;	// m_pScalableEditBoxをNULLにセット.
-	m_pScalableEditBoxPanel = NULL;	// m_pScalableEditBoxPanelをNULLにセット.
+	//m_pScalableEditBoxPanel = NULL;	// m_pScalableEditBoxPanelをNULLにセット.
+	m_pStreamConsole = NULL;	// m_pStreamConsoleをNULLで初期化.
+	m_pConsole = NULL;	// m_pConsoleをNULLにセット.
 
 }
 
@@ -52,11 +54,23 @@ BOOL CMainWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, 
 void CMainWindow::Destroy() {
 
 	// 子ウィンドウの破棄.
-	if (m_pScalableEditBoxPanel != NULL) {
-		m_pScalableEditBoxPanel->Destroy();
-		delete m_pScalableEditBoxPanel;
-		m_pScalableEditBoxPanel = NULL;
+	if (m_pConsole != NULL) {
+		m_pConsole->Destroy();
+		delete m_pConsole;
+		m_pConsole = NULL;
 	}
+	if (m_pStreamConsole != NULL) {
+		m_pStreamConsole->Destroy();
+		delete m_pStreamConsole;
+		m_pStreamConsole = NULL;
+	}
+	/*
+	if (m_pScalableEditBoxPanel != NULL) {
+	m_pScalableEditBoxPanel->Destroy();
+	delete m_pScalableEditBoxPanel;
+	m_pScalableEditBoxPanel = NULL;
+	}
+	*/
 	/*
 	if (m_pScalableEditBox != NULL) {
 	m_pScalableEditBox->Destroy();
@@ -64,11 +78,13 @@ void CMainWindow::Destroy() {
 	m_pScalableEditBox = NULL;
 	}
 	*/
+	/*
 	if (m_pWindowListControl != NULL) {
-		m_pWindowListControl->Destroy();	// m_pWindowListControlのウィンドウを破棄.
-		delete m_pWindowListControl;		// m_pWindowListControlを解放.
-		m_pWindowListControl = NULL;		// m_pWindowListControlをNULLで埋める.
+	m_pWindowListControl->Destroy();	// m_pWindowListControlのウィンドウを破棄.
+	delete m_pWindowListControl;		// m_pWindowListControlを解放.
+	m_pWindowListControl = NULL;		// m_pWindowListControlをNULLで埋める.
 	}
+	*/
 
 	// 自分のウィンドウも破棄.
 	CWindow::Destroy();	// CWindow::Destroyで自身のウィンドウも破棄.
@@ -78,9 +94,16 @@ void CMainWindow::Destroy() {
 // ウィンドウ作成時のハンドラOnCreate.
 int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
+	// ストリームコンソールの作成.
+	m_pStreamConsole = new CStreamConsole();	// CStreamConsoleオブジェクトを作成し, ポインタをm_pStreamConsoleに格納.
+	m_pStreamConsole->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_STREAMCONSOLE, lpCreateStruct->hInstance);	// m_pStreamConsole->Createでストリームコンソールを作成.
+
 	// ウィンドウリストコントロールの作成.
-	m_pWindowListControl = new CWindowListControl();	// CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
-	m_pWindowListControl->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.
+	//m_pWindowListControl = new CWindowListControl();	// CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
+	//m_pWindowListControl->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.
+
+#if 0
+
 	// アイテムを挿入.
 	m_pWindowListControl->Insert(_T("0"), 0, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで0番目にウィンドウを挿入.
 	m_pWindowListControl->Insert(_T("1"), 1, 100, lpCreateStruct->hInstance);	// m_pWindowListControl->Insertで1番目にウィンドウを挿入.
@@ -172,6 +195,8 @@ int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 #endif
 
+#endif
+
 	// 成功.
 	return 0;	// 成功なので0を返す.
 
@@ -188,8 +213,11 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 
 	// 引数のクライアント領域のサイズを使って子ウィンドウをリサイズ.
 	//m_pWindowListControl->MoveWindow(1, 1, cx - (1 * 2), cy - (1 * 2));	// 1周り小さいとなると, 1pxなら2倍の2pxサイズが小さくならなければならない.
-	if (m_pWindowListControl != NULL) {
-		m_pWindowListControl->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	//if (m_pWindowListControl != NULL) {
+	//	m_pWindowListControl->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	//}
+	if (m_pStreamConsole != NULL) {
+		m_pStreamConsole->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
 	}
 
 }
