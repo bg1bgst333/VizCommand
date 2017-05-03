@@ -36,5 +36,6 @@ class CConsoleCore : public CScalableEditBox {
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual int OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);	// キーが押された時のハンドラOnKeyDown.
 		virtual int OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);		// 文字キーが押された時のハンドラOnChar.
+		virtual int OnLButtonUp(UINT nFlags, POINT pt);	// マウス左ボタンが離された時のハンドラOnLButtonUp
 
 };
