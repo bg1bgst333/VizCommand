@@ -64,8 +64,12 @@ void CConsoleCore::ShowOutputForm() {
 
 }
 
-// 入力コマンド文字列の取得関数GetCommandString.(自前の内部バッファに読み込む.)
-int CConsoleCore::GetCommandString() {
+// 入力コマンド文字列の取得関数GetCommandString.
+tstring CConsoleCore::GetCommandString() {
+
+	// 変数の宣言
+	unsigned int uiCommandStringLen;	// コマンド文字列の長さ.
+	TCHAR *ptszCommandString;	// コマンド文字列へのポインタ.
 
 	// いったん内部メモリを破棄.
 	DestroyTextBuffer();
@@ -73,7 +77,23 @@ int CConsoleCore::GetCommandString() {
 	// 文字列取得.
 	GetWindowText();
 
-	return 0;
+	// コマンド文字列の切り出し.
+	uiCommandStringLen = (unsigned int)m_iLen - (unsigned int)m_lStartPos;	// コマンド文字列は, 全体の長さ - 開始位置.
+	ptszCommandString = new TCHAR[uiCommandStringLen + 1];	// コマンド文字列バッファ作成.
+	_tcsncpy_s(ptszCommandString, uiCommandStringLen + 1, &m_ptszText[m_lStartPos], uiCommandStringLen);	// コマンド文字列部分だけコピー.
+	ptszCommandString[uiCommandStringLen];	// NULL終端.
+
+	// メンバにセット.
+	m_tstrCommandString = ptszCommandString;	// m_tstrCommandStringにptszCommandStringをセット.
+
+	// 解放.
+	delete[] ptszCommandString;	// delete[]でptszCommandStringを解放.
+
+	// 内部メモリを破棄.
+	DestroyTextBuffer();
+
+	// コマンド文字列を返す.
+	return m_tstrCommandString;	// m_tstrCommandStringを返す.
 
 }
 
@@ -127,6 +147,12 @@ int CConsoleCore::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		if (m_lCurrentPos <= m_lStartPos) {	// 開始位置より手前だったら入力キャンセルする.
 			return -1;	// -1を返すと入力キャンセルになる.
 		}
+	}
+
+	// リターンキーが押された時.
+	if (nChar == VK_RETURN) {	// VK_RETURNの時.
+		GetCommandString();	// GetCommandStringでコマンド文字列を取得.
+		MessageBox(NULL, m_tstrCommandString.c_str(), _T("VizCommand"), MB_OK);	// メッセージボックスでコマンド文字列の表示.
 	}
 
 	// 通常は入力を有効にする.
