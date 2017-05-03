@@ -1,14 +1,62 @@
 // ヘッダのインクルード
 // 独自のヘッダ
 #include "ConsoleCore.h"	// コンソールコアクラス
+#include <shlobj.h>			// シェルオブジェクト.
 
 // コンストラクタCConsoleCore()
 CConsoleCore::CConsoleCore() : CScalableEditBox() {
+
+	// メンバの初期化.
+	m_tstrFormString = GREATER_THAN;	// フォーム文字列を">"に初期化.
 
 }
 
 // デストラクタ~CConsoleCore()
 CConsoleCore::~CConsoleCore() {
+
+}
+
+// ホームフォルダ(CSIDL_PROFILE)のパスを取得する関数GetProfilePath.
+tstring CConsoleCore::GetProfilePath(HWND hWnd) {
+
+	// 配列の宣言.
+	TCHAR tszPath[1024];	// CSIDL_PROFILEなパスを格納するtszPath.
+
+	// ホームフォルダパスの取得.
+	SHGetSpecialFolderPath(hWnd, tszPath, CSIDL_PROFILE, FALSE);	// SHGetSpecialFolderPathでCSIDL_PROFILEなパスを取得.
+
+	// メンバに格納.
+	m_tstrProfilePath = tszPath;	// m_tstrProfilePathにtszPathを格納.
+
+	// ホームフォルダパスを返す.
+	return m_tstrProfilePath;	// m_tstrProfilePathを返す.
+
+}
+
+// 出力フォーム文字列を取得する関数GetOutputFormString.
+tstring CConsoleCore::GetOutputFormString() {
+
+	// 出力フォーム文字列は"現在のパス"+"フォーム文字列".
+	m_tstrOutputFormString = m_tstrCurrentPath + m_tstrFormString;	// m_tstrOutputFormStringにm_tstrCurrentPathとm_tstrFormStringを連結したものを格納.
+
+	// 出力フォーム文字列を返す.
+	return m_tstrOutputFormString;	// m_tstrOutputFormStringを返す.
+
+}
+
+// コンソールに文字列を出力する関数PutConsole.
+void CConsoleCore::PutConsole(tstring tstrString) {
+
+	// 文字列を追加する.
+	SendMessage(m_hWnd, EM_REPLACESEL, 0, (LPARAM)tstrString.c_str());	// EM_REPLACESELでtstrStringを追加する.(本来は置換だが, 0を指定したときは追加(挿入)したことになる.)
+
+}
+
+// 出力フォームの出力.
+void CConsoleCore::ShowOutputForm() {
+
+	// 出力フォーム文字列を出力.
+	PutConsole(m_tstrOutputFormString);	// PutConsoleでm_tstrOutputFormStringを出力.
 
 }
 
@@ -21,6 +69,29 @@ int CConsoleCore::GetCommandString() {
 	// 文字列取得.
 	GetWindowText();
 
+	return 0;
+
+}
+
+// ウィンドウ作成時のハンドラOnCreate.
+int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
+
+	// 親クラスのOnCreateを呼ぶ.
+	CScalableEditBox::OnCreate(hwnd, lpCreateStruct);	// CScalableEditBox::OnCreateを呼ぶ.
+
+	// ホームフォルダの取得.
+	GetProfilePath(hwnd);	// GetProfilePathで取得.
+
+	// 現在のパスをホームフォルダに.
+	m_tstrCurrentPath = m_tstrProfilePath;	// m_tstrCurrentPathをm_tstrProfilePathにする.
+
+	// 出力フォームを取得.
+	GetOutputFormString();	// GetOutputFormStringで取得.
+
+	// 出力フォームを出力.
+	ShowOutputForm();	// ShowOutputFormで出力.
+
+	// 成功なので0を返す.
 	return 0;
 
 }
