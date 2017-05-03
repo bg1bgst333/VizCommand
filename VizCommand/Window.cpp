@@ -434,7 +434,12 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			{
 
 				// OnKeyDownに任せる.
-				OnKeyDown(wParam, LOWORD(lParam), HIWORD(lParam));	// OnKeyDownに任せる.
+				if (OnKeyDown(wParam, LOWORD(lParam), HIWORD(lParam)) == -1) {	// -1の時は入力をキャンセル.
+
+					// 入力キャンセル.
+					return 0;	// 0をここで返すと入力キャンセルとなる.
+
+				}
 
 			}
 
@@ -539,7 +544,10 @@ int CWindow::OnClose() {
 }
 
 // キーが押された時のハンドラOnKeyDown.
-void CWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+int CWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+
+	// 成功なら0を返す.
+	return 0;
 
 }
 

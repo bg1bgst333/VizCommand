@@ -34,7 +34,7 @@ class CConsoleCore : public CScalableEditBox {
 		virtual void ShowOutputForm();	// 出力フォームの出力.
 		virtual int GetCommandString();		// 入力コマンド文字列の取得関数GetCommandString.(自前の内部バッファに読み込む.)]
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
-		virtual void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);	// キーが押された時のハンドラOnKeyDown.
+		virtual int OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);	// キーが押された時のハンドラOnKeyDown.
 		virtual int OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);		// 文字キーが押された時のハンドラOnChar.
 
 };

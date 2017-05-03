@@ -101,13 +101,19 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 }
 
 // キーが押された時のハンドラOnKeyDown.
-void CConsoleCore::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+int CConsoleCore::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
-	// リターンきーが押された時.
-	if (nChar == VK_RETURN) {		// VK_RETURNの時.
-		GetCommandString();	// コマンド文字列取得.
-		MessageBox(NULL, m_ptszText, _T("VizCommand"), MB_OK);
+	// 左キーが押された時.
+	if (nChar == VK_LEFT) {	// VK_LEFTの時.
+		m_lCurrentPos = 0;	// m_lCurrentPosを0にセット.
+		SendMessage(m_hWnd, EM_GETSEL, (WPARAM)&m_lCurrentPos, NULL);	// キャレットの位置を取得.
+		if (m_lCurrentPos <= m_lStartPos) {	// 開始位置より手前だったら入力キャンセルする.
+			return -1;	// -1を返すと入力キャンセルになる.
+		}
 	}
+
+	// 通常は入力を有効にする.
+	return 0;	// 0を返すと有効になる.
 
 }
 

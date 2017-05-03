@@ -58,7 +58,7 @@ int CScalableEditBox::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 }
 
 // キーが押された時のハンドラOnKeyDown.
-void CScalableEditBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+int CScalableEditBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 	// リターン, バックスペースの時の動作.
 	if (nChar == VK_RETURN) {		// VK_RETURNの時.
@@ -112,6 +112,9 @@ void CScalableEditBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		}
 
 	}
+
+	// キャンセルしないのでTRUEを返す.
+	return TRUE;
 
 }
 
