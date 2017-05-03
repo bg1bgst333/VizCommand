@@ -252,6 +252,25 @@ LRESULT CCustomControl::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, L
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// 文字キーが押された時.
+		case WM_CHAR:
+
+			// WM_CHARブロック
+			{
+
+				// OnCharに任せる.
+				if (OnChar(wParam, LOWORD(lParam), HIWORD(lParam)) == -1) {	// -1の時は入力をキャンセル.
+
+					// 入力キャンセル.
+					return 0;	// 0をここで返すと入力キャンセルとなる.
+
+				}
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// それ以外の時.
 		default:
 

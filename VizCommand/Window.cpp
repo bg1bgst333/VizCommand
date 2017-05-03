@@ -441,6 +441,25 @@ LRESULT CWindow::DynamicWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
 
+		// 文字キーが押された時.
+		case WM_CHAR:
+
+			// WM_CHARブロック
+			{
+
+				// OnCharに任せる.
+				if (OnChar(wParam, LOWORD(lParam), HIWORD(lParam)) == -1) {	// -1の時は入力をキャンセル.
+
+					// 入力キャンセル.
+					return 0;	// 0をここで返すと入力キャンセルとなる.
+
+				}
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// それ以外の時.
 		default:
 
@@ -521,6 +540,14 @@ int CWindow::OnClose() {
 
 // キーが押された時のハンドラOnKeyDown.
 void CWindow::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+
+}
+
+// 文字キーが押された時のハンドラOnChar.
+int CWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+
+	// 成功なら0を返す.
+	return 0;
 
 }
 
