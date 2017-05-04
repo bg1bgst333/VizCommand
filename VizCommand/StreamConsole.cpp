@@ -2,6 +2,8 @@
 // 独自のヘッダ
 #include "StreamConsole.h"	// ストリームコンソールクラス
 #include "Console.h"	// コンソールクラス
+#include "ListControlPanel.h"	// リストコントロールパネルクラス
+#include "BinaryFile.h"	// バイナリファイルクラス
 
 // ウィンドウクラス登録関数RegisterClass
 BOOL CStreamConsole::RegisterClass(HINSTANCE hInstance) {
@@ -16,6 +18,9 @@ BOOL CStreamConsole::RegisterClass(HINSTANCE hInstance) {
 
 // コンストラクタCStreamConsole()
 CStreamConsole::CStreamConsole() : CWindowListControl() {
+
+	// メンバの初期化
+	m_nId = 0;
 
 }
 
@@ -49,10 +54,154 @@ int CStreamConsole::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// デフォルトアイテムに子ウィンドウをセット.
 	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(0);	// 0番目を取得.
 	CConsole *pConsole = new CConsole();	// コンソールを生成.
-	pConsole->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// コンソールのウィンドウを生成.
+	pConsole->SetProcWindow(hwnd);	// SetProcWindowで処理する場所をセット.
+	pConsole->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, lpCreateStruct->hInstance);	// コンソールのウィンドウを生成.
 	pItem->m_mapChildMap.insert(std::make_pair(_T("Console"), pConsole));	// アイテムに子ウィンドウを挿入.
+	m_nId++;
 
 	// 成功なので0を返す.
+	return 0;
+
+}
+
+// ユーザ定義メッセージが発生した時のハンドラ.
+void CStreamConsole::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	// switch-case文で振り分ける.
+	switch (uMsg) {
+
+		// CConsoleからCStreamConsole向けコマンドが送られた時.
+		case UM_STREAMCOMMAND:
+
+			// UM_STREAMCOMMANDブロック
+			{
+
+				// OnStreamCommandに任せる.
+				OnStreamCommand(wParam, lParam);	// OnStreamCommandに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// それ以外.
+		default:
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+	}
+
+}
+
+// CConsoleからStreamConsole向けコマンドが送られた時の独自ハンドラ.
+int CStreamConsole::OnStreamCommand(WPARAM wParam, LPARAM lParam) {
+
+	// 変数の宣言
+	tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
+
+	// コマンドとソースを取得.
+	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
+
+	// コマンドと引数のパース.
+	LPTSTR next;
+	tstring command;
+	TCHAR *ptszCommand = new TCHAR[tstrCommand.length() + 1];
+	_tcscpy_s(ptszCommand, tstrCommand.length() + 1, tstrCommand.c_str());
+	TCHAR *p = _tcstok_s(ptszCommand, _T(" ."), &next);
+	command = p;
+	delete[] ptszCommand;
+
+	// コマンドの判別.
+	if (command == _T("list")) {	// コマンド"list".
+
+		// OnListに任せる.
+		OnList(wParam, lParam);	// OnListに任せる.
+
+	}
+
+	// 成功なので0を返す.
+	return 0;
+
+}
+
+// "list"コマンドの独自ハンドラ.
+int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
+
+	// 変数の宣言
+	tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
+
+	// コマンドとソースを取得.
+	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
+
+	// コマンドと引数のパース.
+	LPTSTR next;
+	tstring command;
+	tstring pattern;
+	tstring path;
+	TCHAR *ptszCommand = new TCHAR[tstrCommand.length() + 1];
+	_tcscpy_s(ptszCommand, tstrCommand.length() + 1, tstrCommand.c_str());
+	TCHAR *p = _tcstok_s(ptszCommand, _T(" ."), &next);
+	command = p;
+	pattern = next;
+	path = next;
+	pattern = pattern + _T("\\*");
+	delete[] ptszCommand;
+
+	// 次のアイテムの挿入.
+	HINSTANCE hInstance = (HINSTANCE)GetWindowLong(m_hWnd, GWL_HINSTANCE);	// インスタンスハンドルを取得.
+	Insert(_T("1"), 1, 300, hInstance);	// Insertで1番目にウィンドウを挿入
+
+	// リストコントロールを作成.
+	tstring filename;
+	tstring fullpath;
+	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(1);	// 1番目を取得.
+	CListControlPanel *pListControlPanel = new CListControlPanel();	// リストコントロールパネルを生成.
+	pListControlPanel->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// リストコントロールパネルのウィンドウを生成.
+	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトを作成し, pBinaryFileにポインタを格納.
+	if (pBinaryFile->FindFirstFile(pattern.c_str()) == INVALID_HANDLE_VALUE) {
+		delete pBinaryFile;	// 削除.
+		return -1;
+	}
+	filename = pBinaryFile->m_wfdFindData.cFileName;
+	fullpath = path + _T("\\");
+	fullpath = fullpath + filename;
+	SHFILEINFO sfi;
+	LV_ITEM item;
+	HIMAGELIST hImageList = ImageList_Create(32, 32, ILC_COLOR24, 24, 0);
+	ListView_SetImageList(pListControlPanel->m_pListControl->m_hWnd, hImageList, LVSIL_NORMAL);
+	int i = 0;
+	while (true) {
+		if (!pBinaryFile->FindNextFile()) {
+			break;
+		}
+		filename = pBinaryFile->m_wfdFindData.cFileName;
+		fullpath = path + _T("\\");
+		fullpath = fullpath + filename;
+		if (filename != _T(".") && filename != _T("..")) {
+			::SHGetFileInfo(fullpath.c_str(), 0, &sfi, sizeof(SHFILEINFO), SHGFI_ICON | SHGFI_LARGEICON);
+			ImageList_AddIcon(hImageList, sfi.hIcon);
+			ListView_SetImageList(pListControlPanel->m_pListControl->m_hWnd, hImageList, LVSIL_NORMAL);
+			item.mask = LVIF_TEXT | LVIF_IMAGE;
+			TCHAR t[1024];
+			_tcscpy_s(t, filename.c_str());
+			item.pszText = t;
+			item.iItem = i;
+			item.iSubItem = 0;
+			item.iImage = i;
+			ListView_InsertItem(pListControlPanel->m_pListControl->m_hWnd, &item);
+			i++;
+		}
+	}
+	pBinaryFile->FindClose();
+	delete pBinaryFile;	// 削除.
+	pItem->m_mapChildMap.insert(std::make_pair(_T("ListControlPanel"), pListControlPanel));	// アイテムに子ウィンドウを挿入.
+
+	// 成功なのでTRUEを返す.
 	return 0;
 
 }

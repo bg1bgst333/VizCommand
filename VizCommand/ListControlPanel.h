@@ -4,6 +4,8 @@
 // 独自のヘッダ
 #include "UserControl.h"	// ユーザコントロールクラス
 #include "ListControl.h"	// リストコントロールクラス
+// 既定のヘッダ
+#include <commctrl.h>	// コモンコントロール
 
 // リストコントロールパネルクラスCListControlPanel
 class CListControlPanel : public CUserControl {

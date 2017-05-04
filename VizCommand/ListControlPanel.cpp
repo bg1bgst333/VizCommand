@@ -1,11 +1,12 @@
 // ヘッダのインクルード
 // 独自のヘッダ
 #include "ListControlPanel.h"	// リストコントロールパネルクラス
-// 既定のヘッダ
-#include <commctrl.h>	// コモンコントロール
 
 // ウィンドウクラス登録関数RegisterClass
 BOOL CListControlPanel::RegisterClass(HINSTANCE hInstance) {
+
+	// コモンコントロールの初期化.
+	InitCommonControls();	// InitCommonControlsで初期化.
 
 	// ユーザコントロールとして登録.
 	return CUserControl::RegisterClass(hInstance, _T("ListControlPanel"));	// CUserControl::RegisterClassでウィンドウクラス"ListControlPanel"を登録.

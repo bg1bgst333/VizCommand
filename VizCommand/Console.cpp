@@ -92,11 +92,26 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
 	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
 
+	// コマンドと引数のパース.
+	LPTSTR next;
+	tstring command;
+	TCHAR *ptszCommand = new TCHAR[tstrCommand.length() + 1];
+	_tcscpy_s(ptszCommand, tstrCommand.length() + 1, tstrCommand.c_str());
+	TCHAR *p = _tcstok_s(ptszCommand, _T(" ."), &next);
+	command = p;
+	delete[] ptszCommand;
+
 	// コマンドの判別.
-	if (tstrCommand == _T("hello")) {	// コマンド"hello".
+	if (command == _T("hello")) {	// コマンド"hello".
 
 		// OnHelloに任せる.
 		OnHello(hSrc);	// hSrcを引数として渡して, OnHelloを呼ぶ.
+
+	}
+	else if (command == _T("list")) {	// コマンド"list"
+
+		// StreamConsoleに投げる.
+		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)tstrCommand.c_str(), (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
 
 	}
 	else {	// コマンドが見つからない.
@@ -130,5 +145,13 @@ void CConsole::OnErrorCommandNotFound(HWND hSrc) {
 
 	// レスポンス終了.
 	SendMessage(hSrc, UM_FINISHRESPONSE, 0, 0);	// UM_FINISHRESPONSEを送る.
+
+}
+
+// コマンドに対する処理を実行するウィンドウのウィンドウハンドルをセットする関数SetProcWindow.
+void CConsole::SetProcWindow(HWND hWnd) {
+
+	// メンバにセット.
+	m_hProcWnd = hWnd;	// m_hProcWndにhWndをセット.
 
 }

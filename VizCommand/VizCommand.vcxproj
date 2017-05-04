@@ -93,6 +93,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,6 +126,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,6 +151,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BasicApplication.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
+    <ClCompile Include="BinaryFile.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="ConsoleCore.cpp" />
     <ClCompile Include="CustomControl.cpp" />
@@ -174,6 +177,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BasicApplication.h" />
     <ClInclude Include="BasicWindow.h" />
+    <ClInclude Include="BinaryFile.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="ConsoleCore.h" />
     <ClInclude Include="CustomControl.h" />

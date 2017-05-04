@@ -101,16 +101,16 @@ void CMainWindow::Destroy() {
 int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ストリームコンソールの作成.
-	//m_pStreamConsole = new CStreamConsole();	// CStreamConsoleオブジェクトを作成し, ポインタをm_pStreamConsoleに格納.
-	//m_pStreamConsole->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_STREAMCONSOLE, lpCreateStruct->hInstance);	// m_pStreamConsole->Createでストリームコンソールを作成.
+	m_pStreamConsole = new CStreamConsole();	// CStreamConsoleオブジェクトを作成し, ポインタをm_pStreamConsoleに格納.
+	m_pStreamConsole->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_STREAMCONSOLE, lpCreateStruct->hInstance);	// m_pStreamConsole->Createでストリームコンソールを作成.
 
 	// ウィンドウリストコントロールの作成.
 	//m_pWindowListControl = new CWindowListControl();	// CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
 	//m_pWindowListControl->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.
 
 	// リストコントロールの作成.
-	m_pListControlPanel = new CListControlPanel();	// CListControlPanelオブジェクトを作成し, m_pListControlPanelに格納.
-	m_pListControlPanel->Create(_T(""), 0, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// m_pListControlPanel->Createでリストコントロールパネルを作成.
+	//m_pListControlPanel = new CListControlPanel();	// CListControlPanelオブジェクトを作成し, m_pListControlPanelに格納.
+	//m_pListControlPanel->Create(_T(""), 0, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// m_pListControlPanel->Createでリストコントロールパネルを作成.
 
 #if 0
 
