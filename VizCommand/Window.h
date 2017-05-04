@@ -67,6 +67,7 @@ class CWindow {
 		virtual int OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);	// キーが押された時のハンドラOnKeyDown.
 		virtual int OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);		// 文字キーが押された時のハンドラOnChar.
 		virtual int OnLButtonUp(UINT nFlags, POINT pt);	// マウス左ボタンが離された時のハンドラOnLButtonUp.
+		virtual int OnLButtonDown(UINT nFlags, POINT pt);	// マウス左ボタンが離された時のハンドラOnLButtonDown.
 		virtual void OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);	// ユーザ定義メッセージが発生した時のハンドラ.
 
 };

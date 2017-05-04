@@ -25,6 +25,7 @@ class CConsole : public CScalableEditBoxPanel {
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual void OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);	// ユーザ定義メッセージが発生した時のハンドラ.
 		virtual int OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam);	// CConsoleCoreから送られたメッセージを処理する独自ハンドラ.
-		virtual void OnHello(HWND hSrc);	// "Hello, world!"を出力する独自ハンドラ.
+		virtual void OnHello(HWND hSrc);		// "Hello, world!"を出力する独自ハンドラ.
+		virtual void OnErrorCommandNotFound(HWND hSrc);	// コマンドが見つからない時のエラー用独自ハンドラ.
 
 };
