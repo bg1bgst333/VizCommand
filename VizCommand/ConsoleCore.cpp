@@ -48,6 +48,31 @@ tstring CConsoleCore::GetOutputFormString() {
 // コンソールに文字列を出力する関数PutConsole.
 void CConsoleCore::PutConsole(tstring tstrString) {
 
+	// 変数の初期化
+	int iCount = 0;	// 改行の個数iCountを0に初期化.
+
+	// 改行の数を数える.
+	for (int i = 1; i < (int)tstrString.length(); i++) {
+		if (tstrString.at(i - 1) == _T('\r') && tstrString.at(i) == _T('\n')) {
+
+			// 変数の宣言
+			int iHeight;	// 新しい高さiHeight.
+
+			// 改行したら1行分大きくする.
+			iHeight = m_iHeight + m_iLineHeight;	// 現在のウィンドウの高さに1行分の高さを足す.
+			MoveWindow(3, iHeight);	// MoveWindowで高さを新しいiHeightにする.
+			m_iLineCount++;		// 行数を増やす.
+
+			// UM_SIZECHILDで子ウィンドウのサイズに合わせる.
+			WPARAM wParam;
+			wParam = MAKEWPARAM(m_iWidth, m_iHeight);
+			SendMessage(GetParent(m_hWnd), UM_SIZECHILD, wParam, (LPARAM)m_hWnd);
+
+			iCount++;
+
+		}
+	}
+
 	// 文字列を追加する.
 	SendMessage(m_hWnd, EM_REPLACESEL, 0, (LPARAM)tstrString.c_str());	// EM_REPLACESELでtstrStringを追加する.(本来は置換だが, 0を指定したときは追加(挿入)したことになる.)
 
