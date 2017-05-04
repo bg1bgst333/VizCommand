@@ -49,10 +49,9 @@ int CStreamConsole::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	m_pWindowListItemsPanel->Create(_T(""), 0, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTITEMSPANEL1, lpCreateStruct->hInstance);	// m_pWindowListItemsPanel->Createでウィンドウリストアイテムズパネルを作成.(親ウィンドウより小さめ.)
 
 	// デフォルトアイテムの挿入.
-	Insert(_T("0"), 0, 100, lpCreateStruct->hInstance);	// Insertで0番目にウィンドウを挿入
-
+	Insert(_T(""), m_nId, 100, lpCreateStruct->hInstance);	// Insertで0番目にウィンドウを挿入
 	// デフォルトアイテムに子ウィンドウをセット.
-	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(0);	// 0番目を取得.
+	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId);	// 0番目を取得.
 	CConsole *pConsole = new CConsole();	// コンソールを生成.
 	pConsole->SetProcWindow(hwnd);	// SetProcWindowで処理する場所をセット.
 	pConsole->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, lpCreateStruct->hInstance);	// コンソールのウィンドウを生成.
@@ -154,12 +153,12 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 
 	// 次のアイテムの挿入.
 	HINSTANCE hInstance = (HINSTANCE)GetWindowLong(m_hWnd, GWL_HINSTANCE);	// インスタンスハンドルを取得.
-	Insert(_T("1"), 1, 300, hInstance);	// Insertで1番目にウィンドウを挿入
+	Insert(_T(""), m_nId, 300, hInstance);	// Insertで1番目にウィンドウを挿入
 
 	// リストコントロールを作成.
 	tstring filename;
 	tstring fullpath;
-	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(1);	// 1番目を取得.
+	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId);	// 1番目を取得.
 	CListControlPanel *pListControlPanel = new CListControlPanel();	// リストコントロールパネルを生成.
 	pListControlPanel->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// リストコントロールパネルのウィンドウを生成.
 	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトを作成し, pBinaryFileにポインタを格納.
@@ -200,6 +199,17 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	pBinaryFile->FindClose();
 	delete pBinaryFile;	// 削除.
 	pItem->m_mapChildMap.insert(std::make_pair(_T("ListControlPanel"), pListControlPanel));	// アイテムに子ウィンドウを挿入.
+	m_nId++;
+
+	// デフォルトアイテムの挿入.
+	Insert(_T(""), m_nId, 100, hInstance);	// Insertで0番目にウィンドウを挿入
+	// デフォルトアイテムに子ウィンドウをセット.
+	CWindowListItem *pItem2 = m_pWindowListItemsPanel->Get(m_nId);	// 0番目を取得.
+	CConsole *pConsole = new CConsole();	// コンソールを生成.
+	pConsole->SetProcWindow(m_hWnd);	// SetProcWindowで処理する場所をセット.
+	pConsole->Create(_T(""), 0, 0, 0, pItem2->m_iWidth, pItem2->m_iHeight, pItem2->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// コンソールのウィンドウを生成.
+	pItem2->m_mapChildMap.insert(std::make_pair(_T("Console"), pConsole));	// アイテムに子ウィンドウを挿入.
+	m_nId++;
 
 	// 成功なのでTRUEを返す.
 	return 0;

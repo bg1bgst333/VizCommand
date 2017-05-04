@@ -148,6 +148,9 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// 出力フォームを出力.
 	ShowOutputForm();	// ShowOutputFormで出力.
 
+	// フォーカスをセット.
+	::SetFocus(hwnd);	// SetFocusでフォーカスをセット.
+
 	// 成功なので0を返す.
 	return 0;
 
