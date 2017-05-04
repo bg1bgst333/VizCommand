@@ -154,6 +154,8 @@
     <ClCompile Include="CustomControl.cpp" />
     <ClCompile Include="EditBox.cpp" />
     <ClCompile Include="EditBoxPanel.cpp" />
+    <ClCompile Include="ListControl.cpp" />
+    <ClCompile Include="ListControlPanel.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PictureBox.cpp" />
@@ -177,6 +179,8 @@
     <ClInclude Include="CustomControl.h" />
     <ClInclude Include="EditBox.h" />
     <ClInclude Include="EditBoxPanel.h" />
+    <ClInclude Include="ListControl.h" />
+    <ClInclude Include="ListControlPanel.h" />
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="PictureBox.h" />

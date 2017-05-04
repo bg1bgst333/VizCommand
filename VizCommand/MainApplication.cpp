@@ -29,7 +29,12 @@ BOOL CMainApplication::InitInstance(HINSTANCE hInstance, LPTSTR lpCmdLine, int n
 	// エディットボックスパネルクラスの登録
 	//CEditBoxPanel::RegisterClass(hInstance);			// CEditBoxPanel::RegisterClassでエディットボックスパネルクラスの登録.
 	//CScalableEditBoxPanel::RegisterClass(hInstance, (HBRUSH)GetStockObject(LTGRAY_BRUSH));	// CScalableEditBoxPanel::RegisterClassで背景ブラシがLTGRAY_BRUSHなスカラブルエディットボックスパネルクラスの登録.
+
+	// コンソールクラスの登録
 	CConsole::RegisterClass(hInstance);	// CConsole::RegisterClassでコンソールクラスの登録.
+
+	// リストコントロールパネルクラスの登録
+	CListControlPanel::RegisterClass(hInstance);	// CListControlPanel::RegisterClassでリストコントロールパネルクラスの登録.
 
 	// メインウィンドウオブジェクトの生成
 	m_pMainWindow = new CMainWindow();	// CMainWindowオブジェクトを作成し, アドレスをm_pMainWindowに格納.

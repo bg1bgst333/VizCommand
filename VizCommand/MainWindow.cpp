@@ -31,6 +31,7 @@ CMainWindow::CMainWindow() : CBasicWindow() {
 	//m_pScalableEditBoxPanel = NULL;	// m_pScalableEditBoxPanelをNULLにセット.
 	m_pStreamConsole = NULL;	// m_pStreamConsoleをNULLで初期化.
 	m_pConsole = NULL;	// m_pConsoleをNULLにセット.
+	m_pListControlPanel = NULL;	// m_pListControlPanelをNULLにセット.
 
 }
 
@@ -54,6 +55,11 @@ BOOL CMainWindow::Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, 
 void CMainWindow::Destroy() {
 
 	// 子ウィンドウの破棄.
+	if (m_pListControlPanel != NULL) {
+		m_pListControlPanel->Destroy();
+		delete m_pListControlPanel;
+		m_pListControlPanel = NULL;
+	}
 	if (m_pConsole != NULL) {
 		m_pConsole->Destroy();
 		delete m_pConsole;
@@ -95,12 +101,16 @@ void CMainWindow::Destroy() {
 int CMainWindow::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ストリームコンソールの作成.
-	m_pStreamConsole = new CStreamConsole();	// CStreamConsoleオブジェクトを作成し, ポインタをm_pStreamConsoleに格納.
-	m_pStreamConsole->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_STREAMCONSOLE, lpCreateStruct->hInstance);	// m_pStreamConsole->Createでストリームコンソールを作成.
+	//m_pStreamConsole = new CStreamConsole();	// CStreamConsoleオブジェクトを作成し, ポインタをm_pStreamConsoleに格納.
+	//m_pStreamConsole->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_STREAMCONSOLE, lpCreateStruct->hInstance);	// m_pStreamConsole->Createでストリームコンソールを作成.
 
 	// ウィンドウリストコントロールの作成.
 	//m_pWindowListControl = new CWindowListControl();	// CWindowListControlオブジェクトを作成し, ポインタをm_pWindowListControlに格納.
 	//m_pWindowListControl->Create(_T(""), WS_VSCROLL, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTCONTROL1, lpCreateStruct->hInstance);	// m_pWindowListControl->Createでウィンドウリストコントロールを作成.
+
+	// リストコントロールの作成.
+	m_pListControlPanel = new CListControlPanel();	// CListControlPanelオブジェクトを作成し, m_pListControlPanelに格納.
+	m_pListControlPanel->Create(_T(""), 0, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START, lpCreateStruct->hInstance);	// m_pListControlPanel->Createでリストコントロールパネルを作成.
 
 #if 0
 
@@ -218,6 +228,9 @@ void CMainWindow::OnSize(UINT nType, int cx, int cy) {
 	//}
 	if (m_pStreamConsole != NULL) {
 		m_pStreamConsole->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
+	}
+	if (m_pListControlPanel != NULL) {
+		m_pListControlPanel->MoveWindow(PADDING, PADDING, cx - (PADDING * 2), cy - (PADDING * 2));	// 3pxなら2倍の6pxサイズが小さくならなければならない.
 	}
 
 }
