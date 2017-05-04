@@ -156,6 +156,12 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 // キーが押された時のハンドラOnKeyDown.
 int CConsoleCore::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
+	// 上キーが押された時.
+	if (nChar == VK_UP) {	// VK_UPの時.
+		// 上キーはとりあえず無効にして, 上に戻れなくする.
+		return -1;	// -1を返すと入力キャンセルになる.
+	}
+
 	// 左キーが押された時.
 	if (nChar == VK_LEFT) {	// VK_LEFTの時.
 		m_lCurrentPos = 0;	// m_lCurrentPosを0にセット.
