@@ -97,6 +97,14 @@ tstring CConsoleCore::GetCommandString() {
 
 }
 
+// コマンドに対する処理を実行するウィンドウのウィンドウハンドルをセットする関数SetProcWindow.
+void CConsoleCore::SetProcWindow(HWND hWnd) {
+
+	// メンバにセット.
+	m_hProcWnd = hWnd;	// m_hProcWndにhWndをセット.
+
+}
+
 // ウィンドウ作成時のハンドラOnCreate.
 int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
@@ -152,7 +160,9 @@ int CConsoleCore::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	// リターンキーが押された時.
 	if (nChar == VK_RETURN) {	// VK_RETURNの時.
 		GetCommandString();	// GetCommandStringでコマンド文字列を取得.
-		MessageBox(NULL, m_tstrCommandString.c_str(), _T("VizCommand"), MB_OK);	// メッセージボックスでコマンド文字列の表示.
+		//MessageBox(NULL, m_tstrCommandString.c_str(), _T("VizCommand"), MB_OK);	// メッセージボックスでコマンド文字列の表示.
+		CScalableEditBox::OnKeyDown(nChar, nRepCnt, nFlags);	// CScalableEditBox::OnKeyDownを呼ぶことで, 1行増やして改行される.
+		PostMessage(m_hProcWnd, UM_CONSOLECORECOMMAND, (WPARAM)m_tstrCommandString.c_str(), (LPARAM)m_hWnd);	// UM_CONSOLECORECOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
 	}
 
 	// 通常は入力を有効にする.
@@ -172,5 +182,74 @@ int CConsoleCore::OnLButtonUp(UINT nFlags, POINT pt) {
 
 	// 入力は有効にする.
 	return 0;	// 0を返すと有効になる.
+
+}
+
+// ユーザ定義メッセージが発生した時のハンドラ.
+void CConsoleCore::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	// switch-case文で振り分ける.
+	switch (uMsg) {
+
+		// レスポンスメッセージが来た時.
+		case UM_RESPONSEMESSAGE:
+
+			// UM_RESPONSEMESSAGEブロック
+			{
+		
+				// OnResponseMessageに任せる.
+				OnResponseMessage(wParam, lParam);	// OnResponseMessageに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// レスポンスが終了した時.
+		case UM_FINISHRESPONSE:
+
+			// UM_FINISHRESPONSEブロック
+			{
+
+				// OnFinishResponseに任せる.
+				OnFinishResponse(wParam, lParam);	// OnFinishResponseに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+		// それ以外.
+		default:
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
+	}
+
+	// 親クラスのユーザメッセージ処理.
+	CScalableEditBox::OnUserMessage(uMsg, wParam, lParam);	// CScalableEditBox::OnUserMessageに任せる.
+
+}
+
+// レスポンスメッセージが来た時の独自ハンドラ.
+void CConsoleCore::OnResponseMessage(WPARAM wParam, LPARAM lParam) {
+
+	// 変数の宣言
+	tstring tstrMessage;	// メッセージ文字列tstring型tstrMessage.
+
+	// メッセージを取得.
+	tstrMessage = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrMessageに格納.
+
+	// メッセージを出力.
+	PutConsole(tstrMessage);	// PutConsoleでtstrMessageを出力.
+
+}
+
+// レスポンスが終了した時の独自ハンドラ.
+void CConsoleCore::OnFinishResponse(WPARAM wParam, LPARAM lParam) {
+
+	// 出力フォームを出力.
+	ShowOutputForm();	// ShowOutputFormで出力.
 
 }
