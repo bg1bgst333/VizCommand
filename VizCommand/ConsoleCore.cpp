@@ -9,6 +9,7 @@ CConsoleCore::CConsoleCore() : CScalableEditBox() {
 	// メンバの初期化.
 	m_tstrFormString = GREATER_THAN;	// フォーム文字列を">"に初期化.
 	m_lStartPos = 0;	// 入力開始位置を0に初期化.
+	m_ccmdCommand.Clear();	// コマンドのクリア.
 
 }
 
@@ -193,10 +194,13 @@ int CConsoleCore::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 	// リターンキーが押された時.
 	if (nChar == VK_RETURN) {	// VK_RETURNの時.
+		m_ccmdCommand.Clear();	// m_ccmdCommand.Clearでクリア.
 		GetCommandString();	// GetCommandStringでコマンド文字列を取得.
+		m_ccmdCommand.Set(m_tstrCommandString);	// m_ccmdCommand.Setでm_tstrCommandStringをm_ccmdCommandにセットしてパースしてもらう.
 		//MessageBox(NULL, m_tstrCommandString.c_str(), _T("VizCommand"), MB_OK);	// メッセージボックスでコマンド文字列の表示.
 		CScalableEditBox::OnKeyDown(nChar, nRepCnt, nFlags);	// CScalableEditBox::OnKeyDownを呼ぶことで, 1行増やして改行される.
-		PostMessage(m_hProcWnd, UM_CONSOLECORECOMMAND, (WPARAM)m_tstrCommandString.c_str(), (LPARAM)m_hWnd);	// UM_CONSOLECORECOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
+		//PostMessage(m_hProcWnd, UM_CONSOLECORECOMMAND, (WPARAM)m_tstrCommandString.c_str(), (LPARAM)m_hWnd);	// UM_CONSOLECORECOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
+		PostMessage(m_hProcWnd, UM_CONSOLECORECOMMAND, (WPARAM)&m_ccmdCommand, (LPARAM)m_hWnd);	// UM_CONSOLECORECOMMANDでコマンドオブジェクトをコマンドに対する処理を実行するウィンドウに送信.
 	}
 
 	// 通常は入力を有効にする.
@@ -298,6 +302,7 @@ void CConsoleCore::OnResponseMessage(WPARAM wParam, LPARAM lParam) {
 void CConsoleCore::OnFinishResponse(WPARAM wParam, LPARAM lParam) {
 
 	// 出力フォームを出力.
+	m_ccmdCommand.Clear();	// コマンドをクリア.
 	ShowOutputForm();	// ShowOutputFormで出力.
 
 }

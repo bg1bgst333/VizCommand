@@ -3,7 +3,7 @@
 
 // 独自のヘッダ
 #include "ScalableEditBox.h"	// スカラブルエディットボックスクラス
-
+#include "Command.h"			// コマンドクラス
 // マクロの定義
 #define GREATER_THAN _T(">")
 
@@ -19,6 +19,7 @@ class CConsoleCore : public CScalableEditBox {
 		tstring m_tstrFormString;		// フォーム文字列(文字)を格納するtstring型m_tstrFormString.
 		tstring m_tstrOutputFormString;	// 実際に出力するフォーム文字列を格納するtstring型m_tstrOutputFormString.
 		tstring m_tstrCommandString;	// コマンド文字列を格納するtstring型m_tstrCommandString.
+		CCommand m_ccmdCommand;			// コマンドオブジェクトCCommand型m_ccmdCommand.
 		long m_lStartPos;				// 入力開始位置を格納するlong型m_lStartPos.
 		long m_lCurrentPos;				// 入力現在位置を格納するlong型m_lCurrentPos.
 		HWND m_hProcWnd;				// コマンドに対する処理を実行するウィンドウのウィンドウハンドルHWND型m_hProcWnd.

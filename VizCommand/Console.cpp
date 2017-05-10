@@ -1,6 +1,7 @@
 // ヘッダのインクルード
 // 独自のヘッダ
 #include "Console.h"	// コンソールクラス
+#include "Command.h"	// コマンドクラス
 
 // ウィンドウクラス登録関数RegisterClass
 BOOL CConsole::RegisterClass(HINSTANCE hInstance) {
@@ -85,13 +86,17 @@ void CConsole::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 
 	// 変数の宣言
-	tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	//tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
+
 	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
 
 	// コマンドとソースを取得.
-	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	//tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	pCommand = (CCommand *)wParam;		// wParamをCCommand *型にキャストしてpCommandに格納.
 	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
 
+#if 0
 	// コマンドと引数のパース.
 	LPTSTR next;
 	tstring command;
@@ -100,20 +105,24 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 	TCHAR *p = _tcstok_s(ptszCommand, _T(" ."), &next);
 	command = p;
 	delete[] ptszCommand;
+#endif
 
 	// コマンドの判別.
-	if (command == _T("hello")) {	// コマンド"hello".
+	tstring tstrCommandName = pCommand->GetCommandName();	// pCommand->GetCommandNameでコマンド名を取得し, tstrCommandNameに格納.
+	if (tstrCommandName == _T("hello")) {	// コマンド"hello".
 
 		// OnHelloに任せる.
 		OnHello(hSrc);	// hSrcを引数として渡して, OnHelloを呼ぶ.
 
 	}
-	else if (command == _T("list")) {	// コマンド"list"
+	/*
+	else if (tstrCommandName == _T("list")) {	// コマンド"list"
 
 		// StreamConsoleに投げる.
 		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)tstrCommand.c_str(), (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
 
 	}
+	*/
 	else {	// コマンドが見つからない.
 
 		// コマンドが見つからないエラー.

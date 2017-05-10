@@ -152,6 +152,7 @@
     <ClCompile Include="BasicApplication.cpp" />
     <ClCompile Include="BasicWindow.cpp" />
     <ClCompile Include="BinaryFile.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="ConsoleCore.cpp" />
     <ClCompile Include="CustomControl.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="BasicApplication.h" />
     <ClInclude Include="BasicWindow.h" />
     <ClInclude Include="BinaryFile.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="ConsoleCore.h" />
     <ClInclude Include="CustomControl.h" />
