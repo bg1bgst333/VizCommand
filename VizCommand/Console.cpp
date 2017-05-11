@@ -88,7 +88,6 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 	// 変数の宣言
 	//tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
 	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
-
 	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
 
 	// コマンドとソースを取得.
@@ -115,14 +114,12 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 		OnHello(hSrc);	// hSrcを引数として渡して, OnHelloを呼ぶ.
 
 	}
-	/*
 	else if (tstrCommandName == _T("list")) {	// コマンド"list"
 
 		// StreamConsoleに投げる.
-		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)tstrCommand.c_str(), (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
+		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)pCommand, (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
 
 	}
-	*/
 	else {	// コマンドが見つからない.
 
 		// コマンドが見つからないエラー.

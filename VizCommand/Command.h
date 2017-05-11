@@ -35,6 +35,7 @@ class CCommand {
 		// publicメンバ関数
 		BOOL Set(tstring tstrCommandString);	// コマンドのセットSet.
 		void Clear();	// コマンドのクリアClear.
-		const tstring & GetCommandName();	// コマンド名の取得GetCommandName.
+		const tstring GetCommandName();	// コマンド名の取得GetCommandName.
+		const tstring GetParam(int index);	// パラメータの取得GetParam.
 
 };

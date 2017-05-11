@@ -41,9 +41,22 @@ void CCommand::Clear(){
 }
 
 // コマンド名の取得GetCommandName.
-const tstring & CCommand::GetCommandName(){
+const tstring CCommand::GetCommandName(){
 
 	// コマンド名を返す.
 	return m_tstrCommandName;
+
+}
+
+// パラメータの取得GetParam.
+const tstring CCommand::GetParam(int index){
+
+	// index番目のパラメータを返す.
+	if (index < m_vectstrCommandToken.size()) {	// 引数のサイズより小さい場合.
+		return m_vectstrCommandToken[index];	// index番目を返す.
+	}
+	else {
+		return _T("");	// 範囲外なので空文字を返す。
+	}
 
 }

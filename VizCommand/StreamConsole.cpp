@@ -4,6 +4,7 @@
 #include "Console.h"	// コンソールクラス
 #include "ListControlPanel.h"	// リストコントロールパネルクラス
 #include "BinaryFile.h"	// バイナリファイルクラス
+#include "Command.h"	// コマンドクラス
 
 // ウィンドウクラス登録関数RegisterClass
 BOOL CStreamConsole::RegisterClass(HINSTANCE hInstance) {
@@ -97,13 +98,16 @@ void CStreamConsole::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 int CStreamConsole::OnStreamCommand(WPARAM wParam, LPARAM lParam) {
 
 	// 変数の宣言
-	tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	//tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
 	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
 
 	// コマンドとソースを取得.
-	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	//tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	pCommand = (CCommand *)wParam;		// wParamをCCommand *型にキャストしてpCommandに格納.
 	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
 
+#if 0
 	// コマンドと引数のパース.
 	LPTSTR next;
 	tstring command;
@@ -112,9 +116,11 @@ int CStreamConsole::OnStreamCommand(WPARAM wParam, LPARAM lParam) {
 	TCHAR *p = _tcstok_s(ptszCommand, _T(" ."), &next);
 	command = p;
 	delete[] ptszCommand;
+#endif
 
 	// コマンドの判別.
-	if (command == _T("list")) {	// コマンド"list".
+	tstring tstrCommandName = pCommand->GetCommandName();	// pCommand->GetCommandNameでコマンド名を取得し, tstrCommandNameに格納.
+	if (tstrCommandName == _T("list")) {	// コマンド"list".
 
 		// OnListに任せる.
 		OnList(wParam, lParam);	// OnListに任せる.
@@ -130,13 +136,18 @@ int CStreamConsole::OnStreamCommand(WPARAM wParam, LPARAM lParam) {
 int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 
 	// 変数の宣言
-	tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
+	//tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
 	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
+	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
 
 	// コマンドとソースを取得.
-	tstrCommand = (TCHAR *)wParam;	// wParamをTCHAR *型にキャストしてtstrCommandに格納.
+	pCommand = (CCommand *)wParam;	// wParamをCCommand *型にキャストしてpCommandに格納.
+	tstring tstrCommandName = pCommand->GetCommandName();	// pCommand->GetCommandNameでコマンド名を取得し, tstrCommandNameに格納.
 	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
 
+	// パスの取得.
+	tstring tstrPath = pCommand->GetParam(1);	// 1番目がパスなので, pCommand->GetParam(1)で1番目のパスを取得.
+#if 0
 	// コマンドと引数のパース.
 	LPTSTR next;
 	tstring command;
@@ -150,6 +161,11 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	path = next;
 	pattern = pattern + _T("\\*");
 	delete[] ptszCommand;
+#endif
+
+	// 検索パターンの組み立て.
+	tstring tstrPattern = tstrPath;
+	tstrPattern = tstrPattern + _T("\\*");
 
 	// 次のアイテムの挿入.
 	HINSTANCE hInstance = (HINSTANCE)GetWindowLong(m_hWnd, GWL_HINSTANCE);	// インスタンスハンドルを取得.
@@ -162,12 +178,12 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	CListControlPanel *pListControlPanel = new CListControlPanel();	// リストコントロールパネルを生成.
 	pListControlPanel->Create(_T(""), 0, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// リストコントロールパネルのウィンドウを生成.
 	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトを作成し, pBinaryFileにポインタを格納.
-	if (pBinaryFile->FindFirstFile(pattern.c_str()) == INVALID_HANDLE_VALUE) {
+	if (pBinaryFile->FindFirstFile(tstrPattern.c_str()) == INVALID_HANDLE_VALUE) {
 		delete pBinaryFile;	// 削除.
 		return -1;
 	}
 	filename = pBinaryFile->m_wfdFindData.cFileName;
-	fullpath = path + _T("\\");
+	fullpath = tstrPath + _T("\\");
 	fullpath = fullpath + filename;
 	SHFILEINFO sfi;
 	LV_ITEM item;
@@ -179,7 +195,7 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 			break;
 		}
 		filename = pBinaryFile->m_wfdFindData.cFileName;
-		fullpath = path + _T("\\");
+		fullpath = tstrPath + _T("\\");
 		fullpath = fullpath + filename;
 		if (filename != _T(".") && filename != _T("..")) {
 			::SHGetFileInfo(fullpath.c_str(), 0, &sfi, sizeof(SHFILEINFO), SHGFI_ICON | SHGFI_LARGEICON);
