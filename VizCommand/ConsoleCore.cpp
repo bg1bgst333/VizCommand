@@ -34,6 +34,22 @@ tstring CConsoleCore::GetProfilePath(HWND hWnd) {
 	return m_tstrProfilePath;	// m_tstrProfilePathを返す.
 
 }
+// マイドキュメント(CSIDL_MYDOCUMENTS)のパスを取得する関数GetMyDocumentPath.
+tstring CConsoleCore::GetMyDocumentPath(HWND hWnd){
+
+	// 配列の宣言.
+	TCHAR tszPath[1024];	// CSIDL_MYDOCUMENTSなパスを格納するtszPath.
+
+	// マイドキュメントパスの取得.
+	SHGetSpecialFolderPath(hWnd, tszPath, CSIDL_MYDOCUMENTS, FALSE);	// SHGetSpecialFolderPathでCSIDL_MYDOCUMENTSなパスを取得.
+
+	// メンバに格納.
+	m_tstrMyDocumentPath = tszPath;	// m_tstrMyDocumentPathにtszPathを格納.
+
+	// マイドキュメントパスを返す.
+	return m_tstrMyDocumentPath;	// m_tstrMyDocumentPathを返す.
+
+}
 
 // 出力フォーム文字列を取得する関数GetOutputFormString.
 tstring CConsoleCore::GetOutputFormString() {
@@ -137,11 +153,17 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	// 親クラスのOnCreateを呼ぶ.
 	CScalableEditBox::OnCreate(hwnd, lpCreateStruct);	// CScalableEditBox::OnCreateを呼ぶ.
 
-	// ホームフォルダの取得.
-	GetProfilePath(hwnd);	// GetProfilePathで取得.
+	// ホームフォルダ(マイドキュメントに変更.)の取得.
+	//GetProfilePath(hwnd);	// GetProfilePathで取得.
+	GetMyDocumentPath(hwnd);	// GetMyDocumentPathで取得.
 
+#if 1
+	// 現在のパスをマイドキュメントに.
+	m_tstrCurrentPath = m_tstrMyDocumentPath;	// m_tstrCurrentPathをm_tstrMyDocumentPathにする.
+#else
 	// 現在のパスをホームフォルダに.
 	m_tstrCurrentPath = m_tstrProfilePath;	// m_tstrCurrentPathをm_tstrProfilePathにする.
+#endif
 
 	// 出力フォームを取得.
 	GetOutputFormString();	// GetOutputFormStringで取得.

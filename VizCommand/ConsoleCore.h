@@ -9,12 +9,13 @@
 
 // コンソールコアクラスCConsoleCore
 class CConsoleCore : public CScalableEditBox {
-
+	
 	// publicメンバ
 	public:
 
 		// メンバ変数
 		tstring m_tstrProfilePath;		// ホームフォルダ(CSIDL_PROFILE)のパスを格納するtstring型m_tstrProfilePath.
+		tstring m_tstrMyDocumentPath;	// マイドキュメント(CSIDL_MYDOCUMENTS)のパスを格納するtstring型m_tstrMyDocumentPath.
 		tstring m_tstrCurrentPath;		// 現在のパスを格納するtstring型m_tstrCurrentPath.
 		tstring m_tstrFormString;		// フォーム文字列(文字)を格納するtstring型m_tstrFormString.
 		tstring m_tstrOutputFormString;	// 実際に出力するフォーム文字列を格納するtstring型m_tstrOutputFormString.
@@ -31,6 +32,7 @@ class CConsoleCore : public CScalableEditBox {
 
 		// メンバ関数
 		virtual tstring GetProfilePath(HWND hWnd);	// ホームフォルダ(CSIDL_PROFILE)のパスを取得する関数GetProfilePath.
+		virtual tstring GetMyDocumentPath(HWND hWnd);	// マイドキュメント(CSIDL_MYDOCUMENTS)のパスを取得する関数GetMyDocumentPath.
 		virtual tstring GetOutputFormString();		// 出力フォーム文字列を取得する関数GetOutputFormString.
 		virtual void PutConsole(tstring tstrString);	// コンソールに文字列を出力する関数PutConsole.
 		virtual void ShowOutputForm();	// 出力フォームの出力.

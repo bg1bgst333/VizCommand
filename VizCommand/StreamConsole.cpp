@@ -147,6 +147,12 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 
 	// パスの取得.
 	tstring tstrPath = pCommand->GetParam(1);	// 1番目がパスなので, pCommand->GetParam(1)で1番目のパスを取得.
+	if (tstrPath == _T("")) {	// 空文字列の場合.
+		CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId - 1);	// m_nId - 1番目を取得.
+		CConsole *pConsole = (CConsole *)pItem->m_mapChildMap[_T("Console")];	// pConsoleを取り出す.
+		CConsoleCore *pConsoleCore = (CConsoleCore *)pConsole->m_pEditBox;	// pConsoleCoreを取り出す.
+		tstrPath = pConsoleCore->m_tstrCurrentPath;	// m_tstrCurrentPathを取り出してtstrPathに格納.
+	}
 #if 0
 	// コマンドと引数のパース.
 	LPTSTR next;
