@@ -33,6 +33,9 @@ class CConsoleCore : public CScalableEditBox {
 		// メンバ関数
 		virtual tstring GetProfilePath(HWND hWnd);	// ホームフォルダ(CSIDL_PROFILE)のパスを取得する関数GetProfilePath.
 		virtual tstring GetMyDocumentPath(HWND hWnd);	// マイドキュメント(CSIDL_MYDOCUMENTS)のパスを取得する関数GetMyDocumentPath.
+		virtual void SetCurrentPath(tstring tstrPath);	// 指定されたパスを現在のパスとしてセットする関数SetCurrentPath.
+		virtual tstring GetCurrentPath();	// 現在のパスを取得する関数GetCurrentPath.
+		virtual tstring GetFullPath(tstring tstrPath);	// 指定されたパスのフルパスを返す関数GetFullPath.
 		virtual tstring GetOutputFormString();		// 出力フォーム文字列を取得する関数GetOutputFormString.
 		virtual void PutConsole(tstring tstrString);	// コンソールに文字列を出力する関数PutConsole.
 		virtual void ShowOutputForm();	// 出力フォームの出力.

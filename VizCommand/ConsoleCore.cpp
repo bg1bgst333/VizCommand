@@ -51,6 +51,44 @@ tstring CConsoleCore::GetMyDocumentPath(HWND hWnd){
 
 }
 
+// 指定されたパスを現在のパスとしてセットする関数SetCurrentPath.
+void CConsoleCore::SetCurrentPath(tstring tstrPath){
+
+	// 指定されたパスを現在のパスとしてセット.
+	m_tstrCurrentPath = tstrPath;	// m_tstrCurrentPathをtstrPathにする.
+	SetCurrentDirectory(m_tstrCurrentPath.c_str());	// SetCurrentDirectoryで現在のパスとしてm_tstrCurrentPath.c_str()をセット.
+
+}
+
+// 現在のパスを取得する関数GetCurrentPath.
+tstring CConsoleCore::GetCurrentPath(){
+
+	// 変数の初期化.
+	TCHAR tszPath[1024] = { 0 };	// tszPath(要素数1024)を0で初期化.
+
+	// 現在のパスを取得.
+	GetCurrentDirectory(1024, tszPath);	// GetCurrentDirectoryで現在のパスを取得.
+	m_tstrCurrentPath = tszPath;	// tszPathをm_tstrCurrentPathにセット.
+
+	// パスを返す.
+	return m_tstrCurrentPath;	// m_tstrCurrentPathを返す.
+
+}
+
+// 指定されたパスのフルパスを返す関数GetFullPath.
+tstring CConsoleCore::GetFullPath(tstring tstrPath){
+	
+	// 変数の初期化
+	TCHAR tszPath[1024] = { 0 };	// tszPath(要素数1024)を0で初期化.
+
+	// フルパスを取得.
+	GetFullPathName(tstrPath.c_str(), 1024, tszPath, NULL);	// GetFullPathNameでフルパスを取得.
+
+	// tszPathを返す.
+	return tstring(tszPath);	// tszPathをtstringに変換して返す.
+
+}
+
 // 出力フォーム文字列を取得する関数GetOutputFormString.
 tstring CConsoleCore::GetOutputFormString() {
 
@@ -157,13 +195,8 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	//GetProfilePath(hwnd);	// GetProfilePathで取得.
 	GetMyDocumentPath(hwnd);	// GetMyDocumentPathで取得.
 
-#if 1
-	// 現在のパスをマイドキュメントに.
-	m_tstrCurrentPath = m_tstrMyDocumentPath;	// m_tstrCurrentPathをm_tstrMyDocumentPathにする.
-#else
-	// 現在のパスをホームフォルダに.
-	m_tstrCurrentPath = m_tstrProfilePath;	// m_tstrCurrentPathをm_tstrProfilePathにする.
-#endif
+	// 現在のパスとしてマイドキュメントをセット.
+	SetCurrentPath(m_tstrMyDocumentPath);	// SetCurrentPathでm_tstrMyDocumentPathをセット.
 
 	// 出力フォームを取得.
 	GetOutputFormString();	// GetOutputFormStringで取得.
