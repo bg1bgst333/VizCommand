@@ -1,6 +1,7 @@
 // ヘッダのインクルード
 // 独自のヘッダ
 #include "StreamConsole.h"	// ストリームコンソールクラス
+#include "StreamConsoleItemsPanel.h"	// ストリームコンソールアイテムズパネルクラス
 #include "Console.h"	// コンソールクラス
 #include "ListControlPanel.h"	// リストコントロールパネルクラス
 #include "BinaryFile.h"	// バイナリファイルクラス
@@ -46,7 +47,8 @@ int CStreamConsole::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 	m_hBrush = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));		// 黒のブラシを作成.
 
 	// ウィンドウリストアイテムズパネルクラスの作成.
-	m_pWindowListItemsPanel = new CWindowListItemsPanel();	// CWindowListItemsPanelオブジェクトを作成し, ポインタをm_pWindowListItemsPanelに格納.
+	//m_pWindowListItemsPanel = new CWindowListItemsPanel();	// CWindowListItemsPanelオブジェクトを作成し, ポインタをm_pWindowListItemsPanelに格納.
+	m_pWindowListItemsPanel = new CStreamConsoleItemsPanel();	// CStreamConsoleItemsPanelオブジェクトを作成し, ポインタをm_pWindowListItemsPanelに格納.
 	m_pWindowListItemsPanel->Create(_T(""), 0, 0, 0, m_iWidth, m_iHeight, hwnd, (HMENU)IDC_WINDOWLISTITEMSPANEL1, lpCreateStruct->hInstance);	// m_pWindowListItemsPanel->Createでウィンドウリストアイテムズパネルを作成.(親ウィンドウより小さめ.)
 
 	// デフォルトアイテムの挿入.
@@ -70,6 +72,20 @@ void CStreamConsole::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	// switch-case文で振り分ける.
 	switch (uMsg) {
 
+		// 下へのスクロール要求が送られた時.
+		case UM_REQUESTSCROLLBOTTOM:
+
+			// UM_REQUESTSCROLLBOTTOMブロック
+			{
+
+				// OnRequestScrollBottomに任せる.
+				OnRequestScrollBottom(uMsg, wParam, lParam);	// OnRequestScrollBottomに任せる.
+
+			}
+
+			// 既定の処理へ向かう.
+			break;	// 抜けてDefWindowProcに向かう.
+
 		// CConsoleからCStreamConsole向けコマンドが送られた時.
 		case UM_STREAMCOMMAND:
 
@@ -89,6 +105,33 @@ void CStreamConsole::OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 			// 既定の処理へ向かう.
 			break;	// 抜けてDefWindowProcに向かう.
+
+	}
+
+}
+
+// 下へのスクロール要求.
+void CStreamConsole::OnRequestScrollBottom(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+	// スクロール可能になった時.
+	if (m_ScrollInfo.nMax > m_ScrollInfo.nPage + 1) {
+
+		// 変数の初期化.
+		int iTotalHeight = (int)wParam;
+
+		// スクロール情報取得.
+		m_ScrollInfo.fMask = SIF_POS | SIF_RANGE | SIF_PAGE;
+		GetScrollInfo(m_hWnd, SB_VERT, &m_ScrollInfo);
+
+		// iTotalHeightを最大値にして, 位置も一番下にする.
+		m_ScrollInfo.nMax = iTotalHeight + PADDING * 2;
+		m_ScrollInfo.nPos = m_ScrollInfo.nMax - m_ScrollInfo.nPage;
+
+		// スクロール情報設定.
+		SetScrollInfo(m_hWnd, SB_VERT, &m_ScrollInfo, TRUE);
+
+		// アイテムズパネルの移動.
+		m_pWindowListItemsPanel->MoveWindow(1, -m_ScrollInfo.nPos + PADDING);	// m_pWindowListItemsPanel->MoveWindowでy軸だけ変更.
 
 	}
 

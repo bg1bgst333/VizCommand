@@ -167,6 +167,7 @@
     <ClCompile Include="ScalableEditBoxPanel.cpp" />
     <ClCompile Include="StandardApplication.cpp" />
     <ClCompile Include="StreamConsole.cpp" />
+    <ClCompile Include="StreamConsoleItemsPanel.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowListControl.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="ScalableEditBoxPanel.h" />
     <ClInclude Include="StandardApplication.h" />
     <ClInclude Include="StreamConsole.h" />
+    <ClInclude Include="StreamConsoleItemsPanel.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowListControl.h" />

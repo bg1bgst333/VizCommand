@@ -26,6 +26,7 @@ class CStreamConsole : public CWindowListControl {
 		virtual BOOL Create(LPCTSTR lpctszWindowName, DWORD dwStyle, int x, int y, int iWidth, int iHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance);	// ウィンドウ作成関数Create
 		virtual int OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);	// ウィンドウ作成時のハンドラOnCreate.
 		virtual void OnUserMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);	// ユーザ定義メッセージが発生した時のハンドラ.
+		virtual void OnRequestScrollBottom(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 下へのスクロール要求.
 		virtual int OnStreamCommand(WPARAM wParam, LPARAM lParam);	// CConsoleからStreamConsole向けコマンドが送られた時の独自ハンドラ.
 		virtual int OnList(WPARAM wParam, LPARAM lParam);	// "list"コマンドの独自ハンドラ.
 
