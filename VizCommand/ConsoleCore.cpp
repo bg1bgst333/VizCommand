@@ -193,10 +193,17 @@ int CConsoleCore::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// ホームフォルダ(マイドキュメントに変更.)の取得.
 	//GetProfilePath(hwnd);	// GetProfilePathで取得.
-	GetMyDocumentPath(hwnd);	// GetMyDocumentPathで取得.
 
-	// 現在のパスとしてマイドキュメントをセット.
-	SetCurrentPath(m_tstrMyDocumentPath);	// SetCurrentPathでm_tstrMyDocumentPathをセット.
+	// カレントパスが無い場合はマイドキュメントとする.
+	if (m_tstrCurrentPath == _T("")) {
+
+		// マイドキュメントのパスを取得.
+		GetMyDocumentPath(hwnd);	// GetMyDocumentPathで取得.
+
+		// 現在のパスとしてマイドキュメントをセット.
+		SetCurrentPath(m_tstrMyDocumentPath);	// SetCurrentPathでm_tstrMyDocumentPathをセット.
+
+	}
 
 	// 出力フォームを取得.
 	GetOutputFormString();	// GetOutputFormStringで取得.

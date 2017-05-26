@@ -182,6 +182,7 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	//tstring tstrCommand;	// コマンド文字列tstring型tstrCommand.
 	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
 	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
+	tstring tstrCurrentPath;	// カレントパスtstrCurrentPath.
 
 	// コマンドとソースを取得.
 	pCommand = (CCommand *)wParam;	// wParamをCCommand *型にキャストしてpCommandに格納.
@@ -194,6 +195,7 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 		CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId - 1);	// m_nId - 1番目を取得.
 		CConsole *pConsole = (CConsole *)pItem->m_mapChildMap[_T("Console")];	// pConsoleを取り出す.
 		CConsoleCore *pConsoleCore = (CConsoleCore *)pConsole->m_pEditBox;	// pConsoleCoreを取り出す.
+		tstrCurrentPath = pConsoleCore->GetCurrentPath();	// pConsoleCore->GetCurrentPathをtstrCurrentPathに格納.
 		if (tstrPath == _T("")) {	// 空文字列の場合.
 			pConsoleCore->GetCurrentPath();	// GetCurrentPathで現在のパスを取得.
 			tstrPath = pConsoleCore->m_tstrCurrentPath;	// m_tstrCurrentPathを取り出してtstrPathに格納.
@@ -278,7 +280,7 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	Insert(_T(""), m_nId, 100, hInstance);	// Insertで0番目にウィンドウを挿入
 	// デフォルトアイテムに子ウィンドウをセット.
 	CWindowListItem *pItem2 = m_pWindowListItemsPanel->Get(m_nId);	// 0番目を取得.
-	CConsole *pConsole = new CConsole();	// コンソールを生成.
+	CConsole *pConsole = new CConsole(tstrCurrentPath);	// コンソールを生成.
 	pConsole->SetProcWindow(m_hWnd);	// SetProcWindowで処理する場所をセット.
 	pConsole->Create(_T(""), 0, 0, 0, pItem2->m_iWidth, pItem2->m_iHeight, pItem2->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// コンソールのウィンドウを生成.
 	pItem2->m_mapChildMap.insert(std::make_pair(_T("Console"), pConsole));	// アイテムに子ウィンドウを挿入.

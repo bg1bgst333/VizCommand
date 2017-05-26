@@ -16,6 +16,14 @@ CConsole::CConsole() : CScalableEditBoxPanel() {
 
 }
 
+// コンストラクタCConsole(tstring tstrDefaultCurrentPath)
+CConsole::CConsole(tstring tstrDefaultCurrentPath) : CScalableEditBoxPanel() {
+
+	// デフォルトカレントパスのセット.
+	m_tstrDefaultCurrentPath = tstrDefaultCurrentPath;
+
+}
+
 // デストラクタ~CCConsole()
 CConsole::~CConsole() {
 
@@ -38,6 +46,7 @@ int CConsole::OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) {
 
 	// 子エディットボックスの生成.
 	pConsoleCore = new CConsoleCore();	// CConsoleCoreオブジェクトを作成し, ポインタをpConsoleCoreに格納.
+	pConsoleCore->SetCurrentPath(m_tstrDefaultCurrentPath);	// デフォルトカレントパスのセット.
 	m_pEditBox = pConsoleCore;	// m_pEditBoxにpConsoleCoreをセット.
 	m_pEditBox->Create(_T(""), ES_MULTILINE | ES_WANTRETURN | ES_AUTOHSCROLL /*| ES_AUTOVSCROLL*/, 0, 0, m_iWidth, m_iHeight, hwnd, m_nId + 100, lpCreateStruct->hInstance);	// m_pEditBox->Createでエディットボックス作成.
 
@@ -120,6 +129,12 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)pCommand, (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
 
 	}
+	else if (tstrCommandName == _T("walk")) {	// コマンド"walk"
+
+		// OnWalkに任せる.
+		OnWalk(hSrc, pCommand);	// OnWalkにpCommandを渡す.
+
+	}
 	else {	// コマンドが見つからない.
 
 		// コマンドが見つからないエラー.
@@ -137,6 +152,27 @@ void CConsole::OnHello(HWND hSrc) {
 
 	// "Hello, world!"を出力.
 	SendMessage(hSrc, UM_RESPONSEMESSAGE, (WPARAM)_T("Hello, world!\r\n"), 0);	// UM_RESPONSEMESSAGEで"Hello, world!"を送る.
+
+	// レスポンス終了.
+	SendMessage(hSrc, UM_FINISHRESPONSE, 0, 0);	// UM_FINISHRESPONSEを送る.
+
+}
+
+// フォルダ移動する独自ハンドラ.
+void CConsole::OnWalk(HWND hSrc, CCommand *pCommand){
+
+	// パスの取得.
+	tstring tstrPath = pCommand->GetParam(1);	// 1番目がパスなので, pCommand->GetParam(1)で1番目のパスを取得.
+	CConsoleCore *pConsoleCore = (CConsoleCore *)m_pEditBox;	// pConsoleCoreを取り出す.
+	if (tstrPath == _T("")) {	// 空文字列の場合.
+		tstrPath = pConsoleCore->GetMyDocumentPath(hSrc);	// pConsoleCore->GetMyDocumentPathでマイドキュメントパスを取得し, それをtstrPathに格納.
+	}
+	else {
+		tstring newPath = pConsoleCore->GetFullPath(tstrPath);	// pConsoleCore->GetFullPathでフルパスに変換したものをnewPathに代入.
+		tstrPath = newPath;	// newPathをtstrPathに代入.
+	}
+	pConsoleCore->SetCurrentPath(tstrPath);	// pConsoleCore->SetCurrentPathでtstrPathをセット.
+	pConsoleCore->GetOutputFormString();	// pConsoleCore->GetOutputFormStringでフォームの再生成.
 
 	// レスポンス終了.
 	SendMessage(hSrc, UM_FINISHRESPONSE, 0, 0);	// UM_FINISHRESPONSEを送る.
