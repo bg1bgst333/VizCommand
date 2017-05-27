@@ -29,5 +29,6 @@ class CStreamConsole : public CWindowListControl {
 		virtual void OnRequestScrollBottom(UINT uMsg, WPARAM wParam, LPARAM lParam);	// 下へのスクロール要求.
 		virtual int OnStreamCommand(WPARAM wParam, LPARAM lParam);	// CConsoleからStreamConsole向けコマンドが送られた時の独自ハンドラ.
 		virtual int OnList(WPARAM wParam, LPARAM lParam);	// "list"コマンドの独自ハンドラ.
+		virtual int OnView(WPARAM wParam, LPARAM lParam);	// "view"コマンドの独自ハンドラ.
 
 };

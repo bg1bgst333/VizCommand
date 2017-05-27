@@ -4,6 +4,7 @@
 #include "StreamConsoleItemsPanel.h"	// ストリームコンソールアイテムズパネルクラス
 #include "Console.h"	// コンソールクラス
 #include "ListControlPanel.h"	// リストコントロールパネルクラス
+#include "PictureBox.h"	// ピクチャーボックスクラス
 #include "BinaryFile.h"	// バイナリファイルクラス
 #include "Command.h"	// コマンドクラス
 
@@ -169,6 +170,12 @@ int CStreamConsole::OnStreamCommand(WPARAM wParam, LPARAM lParam) {
 		OnList(wParam, lParam);	// OnListに任せる.
 
 	}
+	else if (tstrCommandName == _T("view")) {	// コマンド"view"
+
+		// OnViewに任せる.
+		OnView(wParam, lParam);	// OnViewに任せる.
+
+	}
 
 	// 成功なので0を返す.
 	return 0;
@@ -286,7 +293,59 @@ int CStreamConsole::OnList(WPARAM wParam, LPARAM lParam) {
 	pItem2->m_mapChildMap.insert(std::make_pair(_T("Console"), pConsole));	// アイテムに子ウィンドウを挿入.
 	m_nId++;
 
-	// 成功なのでTRUEを返す.
+	// 0を返す.
+	return 0;
+
+}
+
+// "view"コマンドの独自ハンドラ.
+int CStreamConsole::OnView(WPARAM wParam, LPARAM lParam){
+
+	// 変数の宣言
+	HWND hSrc;	// 送信元ウィンドウハンドルHWND型hSrc.
+	CCommand *pCommand;	// コマンドオブジェクトポインタpCommand.
+	tstring tstrCurrentPath;	// カレントパスtstrCurrentPath.
+
+	// コマンドとソースを取得.
+	pCommand = (CCommand *)wParam;	// wParamをCCommand *型にキャストしてpCommandに格納.
+	tstring tstrCommandName = pCommand->GetCommandName();	// pCommand->GetCommandNameでコマンド名を取得し, tstrCommandNameに格納.
+	hSrc = (HWND)lParam;	// lParamをHWND型にキャストしてhSrcに格納.
+
+	// パスの取得.
+	tstring tstrPath = pCommand->GetParam(1);	// 1番目がパスなので, pCommand->GetParam(1)で1番目のパスを取得.
+	{	// 一時的にブロックをつくる.
+		CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId - 1);	// m_nId - 1番目を取得.
+		CConsole *pConsole = (CConsole *)pItem->m_mapChildMap[_T("Console")];	// pConsoleを取り出す.
+		CConsoleCore *pConsoleCore = (CConsoleCore *)pConsole->m_pEditBox;	// pConsoleCoreを取り出す.
+		tstrCurrentPath = pConsoleCore->GetCurrentPath();	// pConsoleCore->GetCurrentPathをtstrCurrentPathに格納.
+		tstring newPath = pConsoleCore->GetFullPath(tstrPath);	// pConsoleCore->GetFullPathでフルパスに変換したものをnewPathに代入.
+		tstrPath = newPath;	// newPathをtstrPathに代入.
+	}
+
+	// 次のアイテムの挿入.
+	HINSTANCE hInstance = (HINSTANCE)GetWindowLong(m_hWnd, GWL_HINSTANCE);	// インスタンスハンドルを取得.
+	Insert(_T(""), m_nId, 300, hInstance);	// Insertで1番目にウィンドウを挿入
+
+	// ピクチャーボックスの作成.
+	CWindowListItem *pItem = m_pWindowListItemsPanel->Get(m_nId);	// 1番目を取得.
+	CPictureBox *pPictureBox = new CPictureBox();
+	pPictureBox->Create(_T(""), SS_BITMAP | SS_REALSIZECONTROL | WS_HSCROLL | WS_VSCROLL, 0, 0, pItem->m_iWidth, pItem->m_iHeight, pItem->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// ピクチャーボックスのウィンドウを生成.
+	pPictureBox->Load(tstrPath.c_str(), 0, 0);	// 画像のロード.
+	pPictureBox->SetImage();	// 画像の表示.
+	pItem->m_mapChildMap.insert(std::make_pair(_T("PictureBox"), pPictureBox));	// アイテムに子ウィンドウを挿入.
+	m_nId++;
+
+	// デフォルトアイテムの挿入.
+	Insert(_T(""), m_nId, 100, hInstance);	// Insertで0番目にウィンドウを挿入
+	// デフォルトアイテムに子ウィンドウをセット.
+	CWindowListItem *pItem2 = m_pWindowListItemsPanel->Get(m_nId);	// 0番目を取得.
+	CConsole *pConsole = new CConsole(tstrCurrentPath);	// コンソールを生成.
+	pConsole->SetProcWindow(m_hWnd);	// SetProcWindowで処理する場所をセット.
+	pConsole->Create(_T(""), 0, 0, 0, pItem2->m_iWidth, pItem2->m_iHeight, pItem2->m_hWnd, (HMENU)IDC_WINDOWLISTITEM_CHILD_ID_START + m_nId, hInstance);	// コンソールのウィンドウを生成.
+	pItem2->m_mapChildMap.insert(std::make_pair(_T("Console"), pConsole));	// アイテムに子ウィンドウを挿入.
+	m_nId++;
+
+	// 0を返す.
 	return 0;
 
 }

@@ -135,6 +135,12 @@ int CConsole::OnConsoleCoreCommand(WPARAM wParam, LPARAM lParam) {
 		OnWalk(hSrc, pCommand);	// OnWalkにpCommandを渡す.
 
 	}
+	else if (tstrCommandName == _T("view")) {	// コマンド"view"
+
+		// StreamConsoleに投げる.
+		SendMessage(m_hProcWnd, UM_STREAMCOMMAND, (WPARAM)pCommand, (LPARAM)m_hWnd);	// UM_STREAMCOMMANDでコマンド文字列をコマンドに対する処理を実行するウィンドウに送信.
+
+	}
 	else {	// コマンドが見つからない.
 
 		// コマンドが見つからないエラー.
